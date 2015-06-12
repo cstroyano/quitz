@@ -5,7 +5,7 @@ var quizControlador = require( "../controllers/quiz_controller" ); // Añadir el
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Quitz' });
+  res.render('index', { title: 'Quiz' });
 });
 
 router.get( "/quizes/question", quizControlador.question );

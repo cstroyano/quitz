@@ -13,11 +13,11 @@ exports.answer = function( req, res ) {
 
 	console.log( "Respuesta: " + req.query.Respuesta );
 	
-	if ( ( req.query.Respuesta || "Vacío" ) === "Roma" ) {
-		resultado = { respuesta: "Correcto" };
+	if ( ( req.query.Respuesta || "Vacío" ).match( /^ {0,}ROMA {0,}$/i ) === null ) {
+		resultado = { respuesta: "Incorrecto" };
 	}
 	else {
-		resultado = { respuesta: "Incorrecto" };
+		resultado = { respuesta: "Correcto" };
 	}
 
 	res.render( "quizes/answer", resultado );
