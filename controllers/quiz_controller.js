@@ -1,24 +1,33 @@
 // Controlador de preguntas
 
+// Importar el modelo
+
+var modelo = require( "../models/models.js" );
+
 
 // GET /quizes/question
 exports.question = function( req, res ) {
-	res.render( "quizes/question", { pregunta: "Capital de Italia" } );
+
+	modelo.Quiz.findAll().success( function( quiz ) {
+		res.render( "quizes/question", { pregunta: quiz[ 0 ].pregunta || "Sin pregunta" } );
+	});
+
 }
 
 
 // GET /quizes/answer
 exports.answer = function( req, res ) {
-	var resultado = {};
 
-	console.log( "Respuesta: " + req.query.Respuesta );
+	modelo.Quiz.findAll().success( function( quiz ) {
+			var resultado = {};
+
+			if ( ( req.query.Respuesta || "Vacío" ) === ( quiz[ 0 ].respuesta || "Sin respuesta" ) ) {
+				resultado = { respuesta: "Incorrecto" };
+			}
+			else {
+				resultado = { respuesta: "Correcto" };
+			}
 	
-	if ( ( req.query.Respuesta || "Vacío" ).match( /^ {0,}ROMA {0,}$/i ) === null ) {
-		resultado = { respuesta: "Incorrecto" };
-	}
-	else {
-		resultado = { respuesta: "Correcto" };
-	}
-
-	res.render( "quizes/answer", resultado );
+			res.render( "quizes/answer", resultado );
+	});
 }
