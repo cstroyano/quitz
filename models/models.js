@@ -15,7 +15,7 @@ var storage		= process.env.DATABASE_STORAGE;
 
 // Resto de variables
 var path = require( "path" );
-var Sequelize = require( "Sequelize" ); // Cargar el ORM
+var Sequelize = require( "sequelize" ); // Cargar el ORM
 
 
 // Usar BBDD
