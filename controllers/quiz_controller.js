@@ -21,11 +21,14 @@ exports.answer = function( req, res ) {
 	modelo.Quiz.findAll().success( function( quiz ) {
 			var resultado = {};
 
-			if ( ( req.query.Respuesta || "Vacío" ) === ( quiz[ 0 ].respuesta || "Sin respuesta" ) ) {
-				resultado = { respuesta: "Incorrecto" };
+			console.log( "Respuesta en get: " + (req.query.Respuesta || "Vacío" ) );
+			console.log( "Respuesta en BBDD: " + ( quiz[ 0 ].respuesta || "Sin respuesta" ) );
+
+			if ( ( req.query.Respuesta || "Vacío" ).toLowerCase() === ( quiz[ 0 ].respuesta || "Sin respuesta" ).toLowerCase() ) {
+				resultado = { respuesta: "Correcta" };
 			}
 			else {
-				resultado = { respuesta: "Correcto" };
+				resultado = { respuesta: "Incorrecta" };
 			}
 	
 			res.render( "quizes/answer", resultado );
