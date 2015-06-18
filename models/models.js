@@ -40,13 +40,13 @@ exports.Quiz = Quiz; // Exportar la definición de la tabla Quiz
 
 
 // Crear e inicializar la tabla de preguntas en la BD
-sequelize.sync().success( function() {
+sequelize.sync().then( function() {
 
 	// El manejador se ejecuta una vez que se ha creado la tabla
-	Quiz.count().success( function( count ) {
+	Quiz.count().then( function( count ) {
 
 		if ( count === 0 ) {
-			Quiz.create( { pregunta: "Capital de Italia", respuesta: "Roma" } ).success( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Capital de Italia", respuesta: "Roma" } ).then( function() { console.log( "BD OK" ); } );
 		}
 
 	} );

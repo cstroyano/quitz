@@ -8,7 +8,7 @@ var modelo = require( "../models/models.js" );
 // GET /quizes/question
 exports.question = function( req, res ) {
 
-	modelo.Quiz.findAll().success( function( quiz ) {
+	modelo.Quiz.findAll().then( function( quiz ) {
 		res.render( "quizes/question", { pregunta: quiz[ 0 ].pregunta || "Sin pregunta" } );
 	});
 
@@ -18,7 +18,7 @@ exports.question = function( req, res ) {
 // GET /quizes/answer
 exports.answer = function( req, res ) {
 
-	modelo.Quiz.findAll().success( function( quiz ) {
+	modelo.Quiz.findAll().then( function( quiz ) {
 			var resultado = {};
 
 			console.log( "Respuesta en get: " + (req.query.Respuesta || "Vacío" ) );
