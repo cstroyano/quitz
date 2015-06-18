@@ -9,10 +9,14 @@ router.get('/', function(req, res) {
 	res.render('index', { title: 'Quiz' });
 });
 
-router.get( "/author", ctrlAuthor.author );
 
+// Rutas de la aplicación
 
-router.get( "/quizes/question", ctrlQuiz.question );
-router.get( "/quizes/answer", ctrlQuiz.answer );
+router.get( "/author"                       , ctrlAuthor.author );	// Pantalla de autor
+
+router.get( "/quizes"						, ctrlQuiz.index    );	// Mostrar lista de preguntas
+router.get( "/quizes/:quizId(\\d+)"			, ctrlQuiz.show     );	// Mostrar pregunta
+router.get( "/quizes/:quizId(\\d+)/answer"	, ctrlQuiz.answer   );	// Mostrar respuesta
+
 
 module.exports = router;

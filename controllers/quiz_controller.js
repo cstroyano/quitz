@@ -5,32 +5,45 @@
 var modelo = require( "../models/models.js" );
 
 
-// GET /quizes/question
-exports.question = function( req, res ) {
+// GET /quizes/show		-> Mostrar una pregunta
+exports.show = function( req, res ) {
 
-	modelo.Quiz.findAll().then( function( quiz ) {
-		res.render( "quizes/question", { pregunta: quiz[ 0 ].pregunta || "Sin pregunta" } );
+	console.log( "\nreq.params.quizId = " + req.params.quizId );
+	
+	modelo.Quiz.findById( req.params.quizId ).then( function( quiz ) {
+		res.render( "quizes/show", { quiz: quiz } );
 	});
 
 }
 
 
-// GET /quizes/answer
+// GET /quizes/answer	-> Mostrar una respuesta
 exports.answer = function( req, res ) {
 
-	modelo.Quiz.findAll().then( function( quiz ) {
-			var resultado = {};
+	console.log( "\nreq.params.quizId = " + req.params.quizId );
 
-			console.log( "Respuesta en get: " + (req.query.Respuesta || "Vacío" ) );
-			console.log( "Respuesta en BBDD: " + ( quiz[ 0 ].respuesta || "Sin respuesta" ) );
+	modelo.Quiz.findById( req.params.quizId ).then( function( quiz ) {
+			var resultado = "";
 
-			if ( ( req.query.Respuesta || "Vacío" ).toLowerCase() === ( quiz[ 0 ].respuesta || "Sin respuesta" ).toLowerCase() ) {
-				resultado = { respuesta: "Correcta" };
+			console.log( "Respuesta en get: " + (req.query.respuesta || "Vacío" ) );
+			console.log( "Respuesta en BBDD: " + ( quiz.respuesta || "Sin respuesta" ) );
+
+			if ( ( req.query.respuesta || "Vacío" ).toLowerCase() === ( quiz.respuesta || "Sin respuesta" ).toLowerCase() ) {
+				resultado = "Correcta";
 			}
 			else {
-				resultado = { respuesta: "Incorrecta" };
+				resultado = "Incorrecta";
 			}
 	
-			res.render( "quizes/answer", resultado );
+			res.render( "quizes/answer", { quiz: quiz, respuesta: resultado } );
+	});
+}
+
+
+// GET /quizes		-> Mostrar la lista de preguntas
+exports.index = function( req, res ) {
+
+	modelo.Quiz.findAll().then( function( quizes ) {
+		res.render( "quizes/index.ejs", { quizes: quizes } );
 	});
 }
