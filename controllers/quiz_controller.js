@@ -57,10 +57,15 @@ exports.answer = function( req, res ) {
 // GET /quizes		-> Mostrar la lista de preguntas
 exports.index = function( req, res ) {
 
-	modelo.Quiz.findAll().then(
-		function( quizes ) {
-			res.render( "quizes/index.ejs", { quizes: quizes } );
-		}
-	).catch( function( error ) { next( error ); } );
+	var filtro = ( req.query.search || "" );
+
+	console.log( "\n*** index ***\nreq.query.search: [" + filtro + "]" );
+
+	modelo.Quiz.findAll( { where: ["pregunta like ?", "%" + filtro + "%" ] } ).then(
+			function( quizes ) {
+				res.render( "quizes/index.ejs", { quizes: quizes, filtro: filtro } );
+			}
+		).catch( function( error ) { next( error ); } );
+
 };
 
