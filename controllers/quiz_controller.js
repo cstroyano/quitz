@@ -61,7 +61,7 @@ exports.index = function( req, res ) {
 
 	console.log( "\n*** index ***\nreq.query.search: [" + filtro + "]" );
 
-	modelo.Quiz.findAll( { where: ["pregunta like ?", "%" + filtro + "%" ] } ).then(
+	modelo.Quiz.findAll( { where: ["pregunta like ?", "%" + filtro + "%" ], order: "pregunta" } ).then(
 			function( quizes ) {
 				res.render( "quizes/index.ejs", { quizes: quizes, filtro: filtro } );
 			}

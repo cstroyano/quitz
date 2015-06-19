@@ -49,6 +49,10 @@ sequelize.sync().then( function() {
 			Quiz.create( { pregunta: "Capital de Italia", respuesta: "Roma" } ).then( function() { console.log( "BD OK" ); } );
 			Quiz.create( { pregunta: "Capital de España", respuesta: "Madrid" } ).then( function() { console.log( "BD OK" ); } );
 			Quiz.create( { pregunta: "Capital de Portugal", respuesta: "Lisboa" } ).then( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Capital de Francia", respuesta: "París" } ).then( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Capital de UK", respuesta: "Londres" } ).then( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Capital de Alemania", respuesta: "Berlín" } ).then( function() { console.log( "BD OK" ); } );
+
 		}
 
 	} );
