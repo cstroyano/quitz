@@ -1,2 +1,9 @@
 <p><%= respuesta %></p>
-<p><a href="/quizes/<%= quiz.id %>">Inténtelo otra vez </a></p>
+<p><img src="/images/<%= archivo %>" alt="" height="100" width="100"</p>
+<br>
+
+<% if ( respuesta === "Correcta" ) { %>
+	<p><a href="/quizes">Otra pregunta</a></p>
+<% } else { %>
+	<p><a href="/quizes/<%= quiz.id %>">Inténtelo otra vez</a></p>
+<% } %>
