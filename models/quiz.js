@@ -2,8 +2,13 @@
 
 module.exports = function( sequelize, DateTypes ) {
 	return( sequelize.define( "Quiz"
-							, { pregunta: DateTypes.STRING,
-								respuesta: DateTypes.STRING
+							, { pregunta: { type: 		DateTypes.STRING,
+											validate: 	{ notEmpty: { msg: "-> Falta pregunta" } }
+									},
+								respuesta: { type: 		DateTypes.STRING,
+											validate: 	{ notEmpty: { msg: "-> Falta respuesta" } }
+									}
 							  }
-							) );
+							)
+			);
 }

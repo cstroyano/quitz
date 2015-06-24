@@ -33,7 +33,7 @@ exports.index = function( req, res ) {
 
 	modelo.Quiz.findAll( { where: ["pregunta like ?", "%" + filtro + "%" ], order: "pregunta" } ).then(
 			function( quizes ) {
-				res.render( "quizes/index.ejs", { quizes: quizes, filtro: filtro } );
+				res.render( "quizes/index.ejs", { quizes: quizes, filtro: filtro, errors: [] } );
 			}
 		).catch( function( error ) { next( error ); } );
 
@@ -45,7 +45,7 @@ exports.show = function( req, res ) {
 
 	console.log( "\n*** show***\nreq.quiz.id = " + req.quiz.id );
 	
-	res.render( "quizes/show", { quiz: req.quiz } );
+	res.render( "quizes/show", { quiz: req.quiz, errors: [] } );
 
 };
 
@@ -68,7 +68,7 @@ exports.answer = function( req, res ) {
 		archivo = "fallo.png";
 	}
 	
-	res.render( "quizes/answer", { quiz: req.quiz, respuesta: resultado, archivo: archivo } );
+	res.render( "quizes/answer", { quiz: req.quiz, respuesta: resultado, archivo: archivo, errors: [] } );
 
 };
 
@@ -76,7 +76,7 @@ exports.answer = function( req, res ) {
 // GET /quizes/new		-> Formulario de alta de pregunta
 exports.new = function( req, res ) {
 	var quiz = modelo.Quiz.build( { pregunta: "Pregunta", respuesta: "Respuesta" } ); // Crear objeto Quiz
-	res.render( "quizes/new", { quiz: quiz } );
+	res.render( "quizes/new", { quiz: quiz, errors: [] } );
 
 }
 
@@ -85,10 +85,24 @@ exports.new = function( req, res ) {
 exports.create = function( req, res ) {
 	var quiz = modelo.Quiz.build( req.body.quiz );
 
-	quiz.save( { fields: [ "pregunta", "respuesta" ] } ).then(
-		function() {
-			res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
-		}
-	);
+	quiz.validate().then(
+		function( err ) {
+
+			if ( err ) {
+				res.render( "quizes/new", { quiz: quiz, errors: err.errors } );
+			}
+			else {
+				quiz.save( { fields: [ "pregunta", "respuesta" ] } ).then(
+					function() {
+						res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
+					}
+
+				); // final del quiz.save().then()
+
+			} // Final del if-else
+
+		} // Final del function( err )
+
+	); // Final del quiz.validate().then()
 
 }
