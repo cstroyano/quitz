@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var partials = require( 'express-partials' );
 
+var methodOverride = require( "method-override" );
+
 var routes = require('./routes/index');
 
 var app = express();
@@ -21,6 +23,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());   // Quitado el {extended: false}
 app.use(cookieParser());
+
+app.use( methodOverride( "_method" ) );
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);

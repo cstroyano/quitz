@@ -76,14 +76,30 @@ exports.answer = function( req, res ) {
 // GET /quizes/new		-> Formulario de alta de pregunta
 exports.new = function( req, res ) {
 	var quiz = modelo.Quiz.build( { pregunta: "Pregunta", respuesta: "Respuesta" } ); // Crear objeto Quiz
+
+	console.log( "\n*** new ***\n" );
+
 	res.render( "quizes/new", { quiz: quiz, errors: [] } );
 
-}
+};
+
+
+// GET /quizes/edit		-> Editar una pregunta
+exports.edit = function( req, res ) {
+	var quiz = req.quiz;
+
+	console.log( "\n*** edit ***\n" );
+
+	res.render( "quizes/edit", { quiz: quiz, errors: [] } );
+
+};
 
 
 // POST /quizes/create	-> Crea una nueva pregunta
 exports.create = function( req, res ) {
 	var quiz = modelo.Quiz.build( req.body.quiz );
+
+	console.log( "\n*** create ***\n" );
 
 	quiz.validate().then(
 		function( err ) {
@@ -105,4 +121,32 @@ exports.create = function( req, res ) {
 
 	); // Final del quiz.validate().then()
 
-}
+};
+
+
+// PUT /quizes 		-> Modifica una pregunta en base de datos.
+exports.update = function( req, res ) {
+	req.quiz.pregunta = req.body.quiz.pregunta;
+	req.quiz.respuesta = req.body.quiz.respuesta;
+
+	console.log( "\n*** update ***\n" );
+
+	req.quiz.validate().then(
+		function( err ) {
+			if ( err ) {
+				res.render( "quizes/edit", { quiz: quiz, errors: err.errors } );
+			}
+			else {
+				req.quiz.save( { fields: [ "pregunta", "respuesta" ] } ).then(
+					function() {
+						res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
+					}
+
+				); // final del quiz.save().then()
+
+			} // Final del if-else
+
+		} // Final del function( err )
+
+	); // Final del req.quiz.validate().the()
+};
