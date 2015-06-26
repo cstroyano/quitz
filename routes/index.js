@@ -26,6 +26,7 @@ router.get( "/quizes/:quizId(\\d+)/edit"	, ctrlQuiz.edit		);	// Editar una pregu
 
 router.post( "/quizes/create"				, ctrlQuiz.create	);	// Crear la nueva pregunta en BD
 router.put( "/quizes/:quizId(\\d+)"			, ctrlQuiz.update 	);	// Actualizar una pregunta en BD
+router.delete( "/quizes/:quizId(\\d+)"		, ctrlQuiz.destroy	);	// Borrar una pregunta en BD
 
 
 module.exports = router;

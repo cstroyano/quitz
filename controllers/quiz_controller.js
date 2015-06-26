@@ -113,7 +113,7 @@ exports.create = function( req, res ) {
 						res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
 					}
 
-				); // final del quiz.save().then()
+				).catch( function( error ) { next( error ); } ); // final del quiz.save().then().catch()
 
 			} // Final del if-else
 
@@ -142,11 +142,24 @@ exports.update = function( req, res ) {
 						res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
 					}
 
-				); // final del quiz.save().then()
+				).catch( function( error ) { next( error ); } ); // final del quiz.save().then().catch()
 
 			} // Final del if-else
 
 		} // Final del function( err )
 
 	); // Final del req.quiz.validate().the()
+};
+
+
+// DELETE /quizes		-> Borra una pregunta
+exports.destroy = function( req, res ) {
+
+	console.log( "n*** destroy ***\n" );
+
+	req.quiz.destroy().then(
+		function() {
+			res.redirect( "/quizes" );
+		}
+	).catch( function( errror ) { next( error ); } );
 };
