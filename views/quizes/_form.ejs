@@ -10,5 +10,18 @@
 </p>
 <br>
 <p>
+	<label for="tema" class="rem">Tema:</label>
+	<select name="quiz[desTema]" id="tema">
+		<% var i; for( i = 0; i < temas.length; i++ ) { %>
+			<% if ( temas[ i ].desTema === quiz.desTema ) { %>
+				<option value="<%= temas[ i ].desTema %>" selected><%= temas[ i ].desTema %></option>
+			<% } else { %>
+				<option value="<%= temas[ i ].desTema %>"><%= temas[ i ].desTema %></option>
+			<% } %>
+		<% } %>
+	</select>
+</p>
+<br>
+<p>
 	<a href="/quizes"><button type="button">Cancelar</button></a> <input type="submit" value="Salvar">
 </p>

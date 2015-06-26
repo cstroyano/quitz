@@ -75,12 +75,15 @@ exports.answer = function( req, res ) {
 
 // GET /quizes/new		-> Formulario de alta de pregunta
 exports.new = function( req, res ) {
-	var quiz = modelo.Quiz.build( { pregunta: "Pregunta", respuesta: "Respuesta" } ); // Crear objeto Quiz
+	var quiz = modelo.Quiz.build( { pregunta: "Pregunta", respuesta: "Respuesta", desTema: "Otro" } ); // Crear objeto Quiz
 
 	console.log( "\n*** new ***\n" );
 
-	res.render( "quizes/new", { quiz: quiz, errors: [] } );
-
+	modelo.Tema.findAll( { order: "desTema" } ).then(
+		function( temas ) {
+			res.render( "quizes/new", { quiz: quiz, temas: temas, errors: [] } );
+		}
+	).catch( function( error ) { next( error ); } );
 };
 
 
@@ -90,7 +93,11 @@ exports.edit = function( req, res ) {
 
 	console.log( "\n*** edit ***\n" );
 
-	res.render( "quizes/edit", { quiz: quiz, errors: [] } );
+	modelo.Tema.findAll( { order: "desTema" } ).then(
+		function( temas ) {
+			res.render( "quizes/edit", { quiz: quiz, temas: temas, errors: [] } );
+		}
+	).catch( function( error ) { next( error ); } );
 
 };
 
@@ -108,7 +115,7 @@ exports.create = function( req, res ) {
 				res.render( "quizes/new", { quiz: quiz, errors: err.errors } );
 			}
 			else {
-				quiz.save( { fields: [ "pregunta", "respuesta" ] } ).then(
+				quiz.save( { fields: [ "pregunta", "respuesta", "desTema" ] } ).then(
 					function() {
 						res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
 					}
@@ -128,6 +135,7 @@ exports.create = function( req, res ) {
 exports.update = function( req, res ) {
 	req.quiz.pregunta = req.body.quiz.pregunta;
 	req.quiz.respuesta = req.body.quiz.respuesta;
+	req.quiz.desTema = req.body.quiz.desTema;
 
 	console.log( "\n*** update ***\n" );
 
@@ -137,7 +145,7 @@ exports.update = function( req, res ) {
 				res.render( "quizes/edit", { quiz: quiz, errors: err.errors } );
 			}
 			else {
-				req.quiz.save( { fields: [ "pregunta", "respuesta" ] } ).then(
+				req.quiz.save( { fields: [ "pregunta", "respuesta", "desTema" ] } ).then(
 					function() {
 						res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
 					}

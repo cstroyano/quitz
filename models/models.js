@@ -34,24 +34,38 @@ var sequelize = new Sequelize( DB_name
 
 // Importar la definición de la tabla Quiz
 var Quiz = sequelize.import( path.join( __dirname, 'quiz' ) );
+var Tema = sequelize.import( path.join( __dirname, "tema" ) );
+
 
 exports.Quiz = Quiz; // Exportar la definición de la tabla Quiz
+exports.Tema = Tema; // Exportar la tabla de temas
 
 
 
 // Crear e inicializar la tabla de preguntas en la BD
 sequelize.sync().then( function() {
 
-	// El manejador se ejecuta una vez que se ha creado la tabla
+	Tema.count().then( function( count ) {
+		if ( count == 0 ) {
+			Tema.create( { desTema: "Otro" } ).then( function() { console.log( "BD OK" ); } );
+			Tema.create( { desTema: "Humanidades" } ).then( function() { console.log( "BD OK" ); } );
+			Tema.create( { desTema: "Ocio" } ).then( function() { console.log( "BD OK" ); } );
+			Tema.create( { desTema: "Ciencia" } ).then( function() { console.log( "BD OK" ); } );
+			Tema.create( { desTema: "Tecnología" } ).then( function() { console.log( "BD OK" ); } );
+			Tema.create( { desTema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
+		}
+
+	});
+
 	Quiz.count().then( function( count ) {
 
 		if ( count === 0 ) {
-			Quiz.create( { pregunta: "Capital de Italia", respuesta: "Roma" } ).then( function() { console.log( "BD OK" ); } );
-			Quiz.create( { pregunta: "Capital de España", respuesta: "Madrid" } ).then( function() { console.log( "BD OK" ); } );
-			Quiz.create( { pregunta: "Capital de Portugal", respuesta: "Lisboa" } ).then( function() { console.log( "BD OK" ); } );
-			Quiz.create( { pregunta: "Capital de Francia", respuesta: "París" } ).then( function() { console.log( "BD OK" ); } );
-			Quiz.create( { pregunta: "Capital de UK", respuesta: "Londres" } ).then( function() { console.log( "BD OK" ); } );
-			Quiz.create( { pregunta: "Capital de Alemania", respuesta: "Berlín" } ).then( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Capital de Italia", respuesta: "Roma", desTema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Capital de España", respuesta: "Madrid", desTema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Capital de Portugal", respuesta: "Lisboa", desTema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Capital de Francia", respuesta: "París", desTema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Capital de UK", respuesta: "Londres", desTema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Número PI con cinco decimales", respuesta: "3.14159", desTema: "Ciencia" } ).then( function() { console.log( "BD OK" ); } );
 
 		}
 
