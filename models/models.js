@@ -43,29 +43,32 @@ exports.Tema = Tema; // Exportar la tabla de temas
 
 
 // Crear e inicializar la tabla de preguntas en la BD
-sequelize.sync().then( function() {
+Tema.sync().then( function() {
 
 	Tema.count().then( function( count ) {
-		if ( count == 0 ) {
-			Tema.create( { desTema: "Otro" } ).then( function() { console.log( "BD OK" ); } );
-			Tema.create( { desTema: "Humanidades" } ).then( function() { console.log( "BD OK" ); } );
-			Tema.create( { desTema: "Ocio" } ).then( function() { console.log( "BD OK" ); } );
-			Tema.create( { desTema: "Ciencia" } ).then( function() { console.log( "BD OK" ); } );
-			Tema.create( { desTema: "Tecnología" } ).then( function() { console.log( "BD OK" ); } );
-			Tema.create( { desTema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
+		if ( count === 0 ) {
+			Tema.create( { destema: "Otro" } ).then( function() { console.log( "Tema Otro - BD OK" ); } );
+			Tema.create( { destema: "Humanidades" } ).then( function() { console.log( "Tema Humanidades - BD OK" ); } );
+			Tema.create( { destema: "Ocio" } ).then( function() { console.log( "Tema Ocio - BD OK" ); } );
+			Tema.create( { destema: "Ciencia" } ).then( function() { console.log( "Tema Ciencia - BD OK" ); } );
+			Tema.create( { destema: "Tecnología" } ).then( function() { console.log( "Tema Tecnología - BD OK" ); } );
+			Tema.create( { destema: "Geografía" } ).then( function() { console.log( "Tema Geografía - BD OK" ); } );
 		}
 
 	});
+});
+
+Quiz.sync().then( function() {
 
 	Quiz.count().then( function( count ) {
 
 		if ( count === 0 ) {
-			Quiz.create( { pregunta: "Capital de Italia", respuesta: "Roma", desTema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
-			Quiz.create( { pregunta: "Capital de España", respuesta: "Madrid", desTema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
-			Quiz.create( { pregunta: "Capital de Portugal", respuesta: "Lisboa", desTema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
-			Quiz.create( { pregunta: "Capital de Francia", respuesta: "París", desTema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
-			Quiz.create( { pregunta: "Capital de UK", respuesta: "Londres", desTema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
-			Quiz.create( { pregunta: "Número PI con cinco decimales", respuesta: "3.14159", desTema: "Ciencia" } ).then( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Capital de Italia", respuesta: "Roma", destema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Capital de España", respuesta: "Madrid", destema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Capital de Portugal", respuesta: "Lisboa", destema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Capital de Francia", respuesta: "París", destema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Capital de UK", respuesta: "Londres", destema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
+			Quiz.create( { pregunta: "Número PI con cinco decimales", respuesta: "3.14159", destema: "Ciencia" } ).then( function() { console.log( "BD OK" ); } );
 
 		}
 

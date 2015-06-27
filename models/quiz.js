@@ -10,7 +10,7 @@ module.exports = function( sequelize, DateTypes ) {
 											allowNull: false,
 											validate: 	{ notEmpty: { msg: "-> Falta respuesta" } }
 									},
-								desTema: {	type: 		DateTypes.STRING,
+								destema: {	type: 		DateTypes.STRING,
 										 	allowNull: 	false,
 											validate: 	{ notEmpty: { msg: "-> Falta el tema de la pregunta" } }
 									}

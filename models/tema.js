@@ -2,7 +2,7 @@
 
 module.exports = function( sequelize, DateTypes ) {
 	return( sequelize.define( "Tema"
-							, { desTema: {	type: 		DateTypes.STRING,
+							, { destema: {	type: 		DateTypes.STRING,
 											allowNull: 	false,
 											validate: 	{ notEmpty: { msg: "-> Falta descripción de tema" } }
 									}

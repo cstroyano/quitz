@@ -75,11 +75,11 @@ exports.answer = function( req, res ) {
 
 // GET /quizes/new		-> Formulario de alta de pregunta
 exports.new = function( req, res ) {
-	var quiz = modelo.Quiz.build( { pregunta: "Pregunta", respuesta: "Respuesta", desTema: "Otro" } ); // Crear objeto Quiz
+	var quiz = modelo.Quiz.build( { pregunta: "Pregunta", respuesta: "Respuesta", destema: "Otro" } ); // Crear objeto Quiz
 
 	console.log( "\n*** new ***\n" );
 
-	modelo.Tema.findAll( { order: "desTema" } ).then(
+	modelo.Tema.findAll( { order: "destema" } ).then(
 		function( temas ) {
 			console.log( "Número de temas: " + temas.length + "\n" );
 
@@ -93,9 +93,9 @@ exports.new = function( req, res ) {
 exports.edit = function( req, res ) {
 	var quiz = req.quiz;
 
-	console.log( "\n*** edit ***\nPregunta: " + quiz.pregunta + "\nRespuesta: " + quiz.respuesta + "\nTema: " + quiz.desTema );
+	console.log( "\n*** edit ***\nPregunta: " + quiz.pregunta + "\nRespuesta: " + quiz.respuesta + "\nTema: " + quiz.destema );
 
-	modelo.Tema.findAll( { order: "desTema" } ).then(
+	modelo.Tema.findAll( { order: "destema" } ).then(
 		function( temas ) {
 			console.log( "Número de temas: " + temas.length + "\n" );
 			res.render( "quizes/edit", { quiz: quiz, temas: temas, errors: [] } );
@@ -109,7 +109,7 @@ exports.edit = function( req, res ) {
 exports.create = function( req, res ) {
 	var quiz = modelo.Quiz.build( req.body.quiz );
 
-	console.log( "\n*** create ***\nPregunta: " + quiz.pregunta + "\nRespuesta: " + quiz.respuesta + "\nTema: " + quiz.desTema + "\n" );
+	console.log( "\n*** create ***\nPregunta: " + quiz.pregunta + "\nRespuesta: " + quiz.respuesta + "\nTema: " + quiz.destema + "\n" );
 
 	quiz.validate().then(
 		function( err ) {
@@ -118,7 +118,7 @@ exports.create = function( req, res ) {
 				res.render( "quizes/new", { quiz: quiz, errors: err.errors } );
 			}
 			else {
-				quiz.save( { fields: [ "pregunta", "respuesta", "desTema" ] } ).then(
+				quiz.save( { fields: [ "pregunta", "respuesta", "destema" ] } ).then(
 					function() {
 						res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
 					}
@@ -138,9 +138,9 @@ exports.create = function( req, res ) {
 exports.update = function( req, res ) {
 	req.quiz.pregunta = req.body.quiz.pregunta;
 	req.quiz.respuesta = req.body.quiz.respuesta;
-	req.quiz.desTema = req.body.quiz.desTema;
+	req.quiz.destema = req.body.quiz.destema;
 
-	console.log( "\n*** update ***\nPregunta: " + req.quiz.pregunta + "\nRespuesta: " + req.quiz.respuesta + "\nTema: " + req.quiz.desTema + "\n" );
+	console.log( "\n*** update ***\nPregunta: " + req.quiz.pregunta + "\nRespuesta: " + req.quiz.respuesta + "\nTema: " + req.quiz.destema + "\n" );
 
 	req.quiz.validate().then(
 		function( err ) {
@@ -148,7 +148,7 @@ exports.update = function( req, res ) {
 				res.render( "quizes/edit", { quiz: quiz, errors: err.errors } );
 			}
 			else {
-				req.quiz.save( { fields: [ "pregunta", "respuesta", "desTema" ] } ).then(
+				req.quiz.save( { fields: [ "pregunta", "respuesta", "destema" ] } ).then(
 					function() {
 						res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
 					}
@@ -166,7 +166,7 @@ exports.update = function( req, res ) {
 // DELETE /quizes		-> Borra una pregunta
 exports.destroy = function( req, res ) {
 
-	console.log( "n*** destroy ***\nPregunta: " + req.quiz.pregunta + "\nRespuesta: " + req.quiz.respuesta + "\nTema: " + req.quiz.desTema + "\n" );
+	console.log( "n*** destroy ***\nPregunta: " + req.quiz.pregunta + "\nRespuesta: " + req.quiz.respuesta + "\nTema: " + req.quiz.destema + "\n" );
 
 	req.quiz.destroy().then(
 		function() {
