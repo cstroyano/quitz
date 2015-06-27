@@ -29,7 +29,7 @@ exports.index = function( req, res ) {
 
 	var filtro = ( req.query.search || "" );
 
-	console.log( "\n*** index ***\nreq.query.search: [" + filtro + "]" );
+	console.log( "\n*** index ***\nreq.query.search: [" + filtro + "]\n" );
 
 	modelo.Quiz.findAll( { where: ["pregunta like ?", "%" + filtro + "%" ], order: "pregunta" } ).then(
 			function( quizes ) {
@@ -43,7 +43,7 @@ exports.index = function( req, res ) {
 // GET /quizes/show		-> Mostrar una pregunta
 exports.show = function( req, res ) {
 
-	console.log( "\n*** show***\nreq.quiz.id = " + req.quiz.id );
+	console.log( "\n*** show***\nreq.quiz.id = " + req.quiz.id + "\n" );
 	
 	res.render( "quizes/show", { quiz: req.quiz, errors: [] } );
 
@@ -57,7 +57,7 @@ exports.answer = function( req, res ) {
 
 	console.log( "\n*** answer ***\nreq.quiz.id = " + req.quiz.id );
 	console.log( "Respuesta en get: " + (req.query.respuesta || "Vacío" ) );
-	console.log( "Respuesta en BBDD: " + ( req.quiz.respuesta || "Sin respuesta" ) );
+	console.log( "Respuesta en BBDD: " + ( req.quiz.respuesta || "Sin respuesta" ) + "\n" );
 
 	if ( ( req.query.respuesta || "Vacío" ).toLowerCase() === ( req.quiz.respuesta || "Sin respuesta" ).toLowerCase() ) {
 		resultado = "Correcta";
@@ -81,9 +81,11 @@ exports.new = function( req, res ) {
 
 	modelo.Tema.findAll( { order: "desTema" } ).then(
 		function( temas ) {
+			console.log( "Número de temas: " + temas.length + "\n" );
+
 			res.render( "quizes/new", { quiz: quiz, temas: temas, errors: [] } );
 		}
-	).catch( function( error ) { next( error ); } );
+	);
 };
 
 
@@ -91,13 +93,14 @@ exports.new = function( req, res ) {
 exports.edit = function( req, res ) {
 	var quiz = req.quiz;
 
-	console.log( "\n*** edit ***\n" );
+	console.log( "\n*** edit ***\nPregunta: " + quiz.pregunta + "\nRespuesta: " + quiz.respuesta + "\nTema: " + quiz.desTema );
 
 	modelo.Tema.findAll( { order: "desTema" } ).then(
 		function( temas ) {
+			console.log( "Número de temas: " + temas.length + "\n" );
 			res.render( "quizes/edit", { quiz: quiz, temas: temas, errors: [] } );
 		}
-	).catch( function( error ) { next( error ); } );
+	);
 
 };
 
@@ -106,7 +109,7 @@ exports.edit = function( req, res ) {
 exports.create = function( req, res ) {
 	var quiz = modelo.Quiz.build( req.body.quiz );
 
-	console.log( "\n*** create ***\n" );
+	console.log( "\n*** create ***\nPregunta: " + quiz.pregunta + "\nRespuesta: " + quiz.respuesta + "\nTema: " + quiz.desTema + "\n" );
 
 	quiz.validate().then(
 		function( err ) {
@@ -137,7 +140,7 @@ exports.update = function( req, res ) {
 	req.quiz.respuesta = req.body.quiz.respuesta;
 	req.quiz.desTema = req.body.quiz.desTema;
 
-	console.log( "\n*** update ***\n" );
+	console.log( "\n*** update ***\nPregunta: " + req.quiz.pregunta + "\nRespuesta: " + req.quiz.respuesta + "\nTema: " + req.quiz.desTema + "\n" );
 
 	req.quiz.validate().then(
 		function( err ) {
@@ -163,7 +166,7 @@ exports.update = function( req, res ) {
 // DELETE /quizes		-> Borra una pregunta
 exports.destroy = function( req, res ) {
 
-	console.log( "n*** destroy ***\n" );
+	console.log( "n*** destroy ***\nPregunta: " + req.quiz.pregunta + "\nRespuesta: " + req.quiz.respuesta + "\nTema: " + req.quiz.desTema + "\n" );
 
 	req.quiz.destroy().then(
 		function() {
@@ -171,3 +174,4 @@ exports.destroy = function( req, res ) {
 		}
 	).catch( function( errror ) { next( error ); } );
 };
+
