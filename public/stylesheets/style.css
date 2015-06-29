@@ -1,4 +1,4 @@
-*								{ margin: 0; padding: 0; }
+*								{ margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif;}
 body							{ font: 16px Georgia, serif; }
 
 #page-wrap						{ margin: 2% auto; color: white; }
@@ -9,3 +9,5 @@ header, nav, section, footer	{ background: #eee; text-align: center; }
 nav span						{ margin: 0px 10px 0px 0px; }
 
 #ErrorMsgs						{ color: #f61; font-size: smaler; }
+
+.comentario						{ font-size: small; }

@@ -8,11 +8,24 @@ var modelo = require( "../models/models.js" );
 // Autoload	-> Carga el objeto Quiz con los datos de una pregunta cuando se recibe un Id
 exports.load = function( req, res, next, quizId ) {
 
-	modelo.Quiz.findById( quizId ).then(
+	modelo.Quiz.find( { where:	{ id: Number( quizId ) },
+						include: [ { model: modelo.Comment } ] } ).then(
 
 		function( quiz ) {
+
+			console.log( "\n*** load ***\n" );
+
 			if ( quiz ) {
+				var index = 0;
+
 				req.quiz = quiz;
+
+				console.log( "Mostrar los comentarios:" );
+				for( index in quiz.comments ) {
+					console.log( "\t" + quiz.comments[ index ].texto );
+				}
+				console.log( "Final de comentarios" );
+
 				next();
 			}
 			else {
@@ -20,7 +33,7 @@ exports.load = function( req, res, next, quizId ) {
 			}
 		}
 
-	).catch( function( error ) { next( error ); } );
+	).catch( function( error ) { next( error ); } ); // Final del modelo.Quiz.find().then()
 };
 
 
@@ -40,17 +53,24 @@ exports.index = function( req, res ) {
 };
 
 
-// GET /quizes/show		-> Mostrar una pregunta
+// GET /quizes/:quizId(\\d+)		-> Mostrar una pregunta
 exports.show = function( req, res ) {
+	var index = 0;
 
 	console.log( "\n*** show***\nreq.quiz.id = " + req.quiz.id + "\n" );
 	
+	console.log( "Mostrar los comentarios:");
+	for( index in req.quiz.comments ) {
+		console.log( "\t" + req.quiz.comments[ index ].texto );
+	}
+	console.log( "Final de comentarios");
+
 	res.render( "quizes/show", { quiz: req.quiz, errors: [] } );
 
 };
 
 
-// GET /quizes/answer	-> Mostrar una respuesta
+// GET /quizes/:quizId(\\d+)/answer	-> Mostrar una respuesta
 exports.answer = function( req, res ) {
 	var resultado = "";
 	var archivo = "";
@@ -89,7 +109,7 @@ exports.new = function( req, res ) {
 };
 
 
-// GET /quizes/edit		-> Editar una pregunta
+// GET /quizes/:quizId(\\d+)/edit		-> Editar una pregunta
 exports.edit = function( req, res ) {
 	var quiz = req.quiz;
 
@@ -134,7 +154,7 @@ exports.create = function( req, res ) {
 };
 
 
-// PUT /quizes 		-> Modifica una pregunta en base de datos.
+// PUT /quizes/:quizId(\\d+) 		-> Modifica una pregunta en base de datos.
 exports.update = function( req, res ) {
 	req.quiz.pregunta = req.body.quiz.pregunta;
 	req.quiz.respuesta = req.body.quiz.respuesta;
@@ -163,7 +183,7 @@ exports.update = function( req, res ) {
 };
 
 
-// DELETE /quizes		-> Borra una pregunta
+// DELETE /quizes/:quizId(\\d+)		-> Borra una pregunta
 exports.destroy = function( req, res ) {
 
 	console.log( "n*** destroy ***\nPregunta: " + req.quiz.pregunta + "\nRespuesta: " + req.quiz.respuesta + "\nTema: " + req.quiz.destema + "\n" );

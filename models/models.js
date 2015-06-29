@@ -33,17 +33,25 @@ var sequelize = new Sequelize( DB_name
 
 
 // Importar la definición de la tabla Quiz
-var Quiz = sequelize.import( path.join( __dirname, 'quiz' ) );
+var Quiz = sequelize.import( path.join( __dirname, "quiz" ) );
 var Tema = sequelize.import( path.join( __dirname, "tema" ) );
+var Comment = sequelize.import( path.join( __dirname, "comment" ) )
 
 
-exports.Quiz = Quiz; // Exportar la definición de la tabla Quiz
-exports.Tema = Tema; // Exportar la tabla de temas
+// Establecer las FK's entre tablas
+Comment.belongsTo( Quiz );
+Quiz.hasMany( Comment );
+
+
+// Exportar las definiciones de tablas
+exports.Quiz = Quiz;
+exports.Tema = Tema;
+exports.Comment = Comment;
 
 
 
 // Crear e inicializar la tabla de preguntas en la BD
-Tema.sync().then( function() {
+sequelize.sync().then( function() {
 
 	Tema.count().then( function( count ) {
 		if ( count === 0 ) {
@@ -56,9 +64,6 @@ Tema.sync().then( function() {
 		}
 
 	});
-});
-
-Quiz.sync().then( function() {
 
 	Quiz.count().then( function( count ) {
 
