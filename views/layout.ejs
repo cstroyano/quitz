@@ -11,6 +11,22 @@
   <body>
   	<div id="page-wrap">
   		<header class="main" id="h1">
+
+        <% if ( !session.user ) { %>
+            <span class="right">
+              <button><a href="/login"><img src="/images/login.png" alt="Login" height="32" width="32"></a></button>
+            </span>
+        <% } else { %>
+            <span class="right">
+              <form method="POST" action="/login?_method=delete">
+                <%= session.user.username %>&nbsp;
+                <button type="submit" onclick="return confirm( '¿Cerrar la sesión?' );">
+                  <img src="/images/logout.png" alt="Logout" height="32" width="32"></a>
+                </button>
+              </form>
+            </span>
+        <% } %>
+
   			<h2>Quiz<span>: El juego de las preguntas</span></h2>
   		</header>
 

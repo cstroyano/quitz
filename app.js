@@ -1,12 +1,13 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
+var favicon = require('serve-favicon');				// Middleware para poner el icono favicon
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');			// Middleware para parsear los body de los POST
 var partials = require( 'express-partials' );
 
-var methodOverride = require( "method-override" );
+var methodOverride = require( "method-override" );	// Middleware para sobreescribir métodos HTTP
+var session = require( "express-session" );			// Middleware de control de sesión
 
 var routes = require('./routes/index');
 
@@ -21,12 +22,28 @@ app.use( partials() );
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());   // Quitado el {extended: false}
-app.use(cookieParser());
+app.use(bodyParser.urlencoded());				// Quitado el {extended: false}
 
-app.use( methodOverride( "_method" ) );
+app.use(cookieParser( "ekdjwd/;as24aBRw#" ));	// Añadir semilla para cifrar la cookie
+app.use( session() );							// Instalar el middleware de la sesión
+
+app.use( methodOverride( "_method" ) );			// Instalar el middelware que permite sobreescribir los métodos para tener PUT y DELETE
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+app.use( function( req, res, next ) {
+
+	// Guardar path en session.redir para redirigr al mismo punto tras el login
+	if ( !req.path.match( /\/login|\/logout/ ) ) {
+		req.session.redir = req.path;
+	}
+
+	res.locals.session = req.session;
+
+	next();
+});
+
 
 app.use('/', routes);
 //app.use('/users', users);

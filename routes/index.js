@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-var ctrlQuiz = require( "../controllers/quiz_controller" ); // Añadir el controlador preguntas y respuestas
-var ctrlAuthor = require( "../controllers/author_controller" ); // Añadir el controlador de autor
-var ctrlComment = require( "../controllers/comment_controller" ); // Añadir el controlador de comentarios
+var ctrlQuiz = require( "../controllers/quiz_controller" ); 		// Añadir el controlador preguntas y respuestas
+var ctrlAuthor = require( "../controllers/author_controller" ); 	// Añadir el controlador de autor
+var ctrlComment = require( "../controllers/comment_controller" ); 	// Añadir el controlador de comentarios
+var ctrlSession = require( "../controllers/session_controller" );	// Añadir el controlador de sesiones
 
 
 /* GET home page. */
@@ -25,14 +26,19 @@ router.get( "/quizes/:quizId(\\d+)"					, ctrlQuiz.show     	);	// Mostrar pregu
 router.get( "/quizes/:quizId(\\d+)/answer"			, ctrlQuiz.answer   	);	// Mostrar respuesta
 router.get( "/quizes/new"							, ctrlQuiz.new			);	// Mostrar formulario de nueva pregunta
 router.get( "/quizes/:quizId(\\d+)/edit"			, ctrlQuiz.edit			);	// Editar una pregunta
-
-router.get( "/quizes/:quizId(\\d+)/comments/new"	, ctrlComment.new 		);	// Mostrar el formulario de crear un comentario
-
 router.post( "/quizes/create"						, ctrlQuiz.create		);	// Crear la nueva pregunta en BD
 router.put( "/quizes/:quizId(\\d+)"					, ctrlQuiz.update 		);	// Actualizar una pregunta en BD
 router.delete( "/quizes/:quizId(\\d+)"				, ctrlQuiz.destroy		);	// Borrar una pregunta en BD
 
+router.get( "/quizes/:quizId(\\d+)/comments/new"	, ctrlComment.new 		);	// Mostrar el formulario de crear un comentario
 router.post( "/quizes/:quizId(\\d+)/comments"		, ctrlComment.create 	);	// Crear un nuevo comentario
 
+router.get( "/login" 								, ctrlSession.new 		);	// Mostrar el formulario de login
+router.post( "/login"								, ctrlSession.create 	);	// Crear una nueva sesión
+router.delete( "/login"								, ctrlSession.destroy	);	// Eliminar la sesión
+
+
+
+router
 
 module.exports = router;
