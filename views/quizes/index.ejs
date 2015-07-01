@@ -1,6 +1,6 @@
 <p><form method="get" action="/quizes/">
 
-	<input type="text" name="search" value="<%- filtro %>" /> <input type="submit" value="Buscar" />
+	<input type="text" name="search" value="<%- filtro %>" /> <input type="submit" value="Buscar" class="boton"/>
 
 </form></p>
 <br><hr><br>
@@ -11,30 +11,37 @@
 			<td class="rem"><%= quizes[ i ].destema %></td>
 			<td class="rem">&nbsp;</td>
 			<td><a href="/quizes/<%= quizes[ i ].id %>"><%= quizes[ i ].pregunta %></a></td>
-			<td class="rem">&nbsp;</td>
-			<td>
-				<a href="/quizes/<%= quizes[ i ].id %>/edit">
-					<button>
-						<img src="/images/editar.png" alt="Editar" height="20" width="20">
-					</button>
-				</a>
-			</td>
-			<td>
-				<form method="post" action="quizes/<%= quizes[i].id %>?_method=delete">
-					<button type="submit" onclick="return confirm( 'Borrar: <%= quizes[ i ].pregunta %>' );">
-						<img src="/images/borrar.png" alt="Borrar" height="20" width="20"></a>
-					</button>
-				</form>
-			</td>
+
+			<% if ( session.user ) { %>
+				<td class="rem">&nbsp;</td>
+				<td>
+					<a href="/quizes/<%= quizes[ i ].id %>/edit">
+						<button>
+							<img src="/images/editar.png" alt="Editar" height="20" width="20">
+						</button>
+					</a>
+				</td>
+				<td>
+					<form method="post" action="quizes/<%= quizes[i].id %>?_method=delete">
+						<button type="submit" onclick="return confirm( 'Borrar: <%= quizes[ i ].pregunta %>' );">
+							<img src="/images/borrar.png" alt="Borrar" height="20" width="20"></a>
+						</button>
+					</form>
+				</td>
+			<% } %>
+
 		</tr>
 	<% } %>
 
 </table></p>
-<br><hr><br>
-<p>
-	<a href="/quizes/new">
-		<button type="button">
-			Crear pregunta
-		</button>
-	</a>
-</p>
+
+<% if ( session.user ) { %>
+	<br><hr><br>
+	<p>
+		<a href="/quizes/new">
+			<button type="button" class="boton">
+				Crear pregunta
+			</button>
+		</a>
+	</p>
+<% } %>

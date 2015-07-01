@@ -13,3 +13,41 @@ nav span						{ margin: 0px 10px 0px 0px; }
 .comentario						{ font-size: small; }
 
 .right							{ float: right; }
+
+.boton1							{ background:#dadada;
+								  border:solid 1px #dadada;
+								  padding:7px;
+								  border-radius:5px;   
+								  width:100px;
+								  text-align:center;
+    							  color:#09F;
+    							  background:-moz-linear-gradient(#dadada 0%, #fff 80%);
+    							  background:-webkit-linear-gradient(#dadada 0%, #fff 80%);   
+								}
+
+.boton1:hover					{ background:-moz-linear-gradient(#fff 0%, #dadada 80%);
+    							  background:-webkit-linear-gradient(#fff 0%, #dadada 80%);   
+								}
+
+
+.boton 							{ background:-moz-linear-gradient(#fc0 0%,#F60 100%); 
+								  background:-ms-linear-gradient(#fc0 0%,#F60 100%);
+								  background:-o-linear-gradient(#fc0 0%,#F60 100%); 
+								  background:-webkit-linear-gradient(#fc0 0%,#F60 100%);
+								  background:linear-gradient(#fc0 0%,#F60 100%);
+								  border:solid 1px #DEDEDE; 
+								  border-radius:5px;
+								  text-align:center;
+								  padding:5px; 
+								  color:#fff;
+  								  width:100px;
+								}
+
+.boton:hover					{ background:-moz-linear-gradient(#fff 0%,#96C2EE 100%);
+								  background:-ms-linear-gradient(#fff 0%,#96C2EE 100%);
+								  background:-o-linear-gradient(#fff 0%,#96C2EE 100%); 
+								  background:-webkit-linear-gradient(#fff 0%,#96C2EE 100%);
+								  background:linear-gradient(#fff 0%,#96C2EE 100%);
+								  color:#999;
+								}
+

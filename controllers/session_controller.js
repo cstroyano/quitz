@@ -1,5 +1,17 @@
 // Controlador de sesiones
 
+// Middleware de autorización de accesos HTTP restringidos
+exports.loginRequerido = function( req, res, next ) {
+
+	if ( req.session.user ) {
+		next();
+	}
+	else {
+		res.redirect( "/login" );
+	}
+
+};
+
 // GET /login	-> Mostrar el formulario de login
 exports.new = function( req, res ) {
 	var errors = req.session.errors || {};	// Guarda los errores de sesión

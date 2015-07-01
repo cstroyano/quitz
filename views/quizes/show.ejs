@@ -1,11 +1,11 @@
 <form method="get" action="/quizes/<%= quiz.id %>/answer">
 
 	<p>Pregunta: <%= quiz.pregunta %></p>
-	<p><input type="text" name="respuesta" value="" /> <input type="submit" value="Enviar" /></p>
+	<p><input type="text" name="respuesta" value="" size="40" /> <input type="submit" value="Enviar" class="boton"/></p>
 
 </form>
 <br>
-<p><a href="/quizes/<%= quiz.id %>/comments/new"><button>Nuevo comentario</button></a></p>
+<p><a href="/quizes/<%= quiz.id %>/comments/new"><button class="boton">Nuevo comentario</button></a></p>
 <br>
 <div class="comentario">
 <p><strong>Comentarios:</strong></p>
