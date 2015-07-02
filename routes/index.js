@@ -13,8 +13,8 @@ router.get('/', function(req, res) {
 });
 
 
-// Autoload de comandos que tengan identificador de pregunta
-router.param( "quizId", ctrlQuiz.load );
+router.param( "quizId"		, ctrlQuiz.load 	);	// Autoload de comandos que tengan identificador de pregunta
+router.param( "commentId"	, ctrlComment.load 	);	// Autoload de comandos que tengan identificador de comentario
 
 
 // Rutas de la aplicación
@@ -33,6 +33,9 @@ router.delete( "/quizes/:quizId(\\d+)"			, ctrlSession.loginRequerido	, ctrlQuiz
 
 router.get( "/quizes/:quizId(\\d+)/comments/new", ctrlComment.new 		);	// Mostrar el formulario de crear un comentario
 router.post( "/quizes/:quizId(\\d+)/comments"	, ctrlComment.create 	);	// Crear un nuevo comentario
+
+router.put( "/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish"
+												, ctrlSession.loginRequerido	, ctrlComment.publish ); // Autorizar publicación
 
 router.get( "/login" 							, ctrlSession.new 		);	// Mostrar el formulario de login
 router.post( "/login"							, ctrlSession.create 	);	// Crear una nueva sesión

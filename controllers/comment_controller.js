@@ -3,6 +3,25 @@
 var modelo = require( "../models/models.js" );
 
 
+// Controlador del autoload del commentId
+exports.load = function( req, res, next, commentId ) {
+	modelo.Comment.findById( Number( commentId ) ).then(
+		function( comment ) {
+			if ( comment ) {
+				req.comment = comment;
+				next();
+			}
+			else {
+				next( new Error( "No existe el comentario con Id = " + commentId ) );
+			}
+
+		} // Final del function( comment )
+
+	).catch( function( error ) { next( error ) } ) ; // Final del modelo.Comment.findById().then()
+
+};
+
+
 // GET /quizes/:quizId/comments/new		-> Mostrar el formulario de alta de comentario
 exports.new = function( req, res ) {
 
@@ -44,3 +63,20 @@ exports.create = function( req, res ) {
 	).catch( function( error ) { next( error ); } ); // Final del comment.validate().then()
 
 };
+
+
+// PUT /quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish -> Autorizar un comentario.
+exports.publish = function( req, res ) {
+	
+	console.log( "*** /quizes/:quizId/comments/commentId/publish ***\n" );
+
+	req.comment.publicado = true;
+
+	req.comment.save( {fields: [ "publicado" ] } ).then(
+		function() {
+			res.redirect( "/quizes/" + req.params.quizId );
+		}
+	).catch( function( error ) { next( error ) } );
+
+};
+
