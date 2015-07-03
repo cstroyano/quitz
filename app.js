@@ -32,9 +32,9 @@ app.use( methodOverride( "_method" ) );			// Instalar el middelware que permite 
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+// Guardar path en session.redir para redirigr al mismo punto tras el login
 app.use( function( req, res, next ) {
 
-	// Guardar path en session.redir para redirigr al mismo punto tras el login
 	if ( !req.path.match( /\/login|\/logout/ ) ) {
 		req.session.redir = req.path;
 	}
@@ -43,6 +43,30 @@ app.use( function( req, res, next ) {
 
 	next();
 });
+
+
+// Comprobar el autologout
+app.use( function( req, res, next ) {
+
+    var aux = new Date().getTime();
+
+    if ( req.session.timestamp && req.session.user ) {
+
+        console.log( "\n*** Diferencia de tiempo: " + aux + " - " + req.session.timestamp + " = " + ( aux - req.session.timestamp ) );
+
+        if ( ( aux - req.session.timestamp ) >= 120000 ) {  // Diferencia de tiempo mayor de 2 minutos (120 segundos x 1000)
+            console.log( "***Desconexión de sesión automática\n " );
+
+            delete req.session.user;
+        }
+
+    }
+
+    req.session.timestamp = aux;
+
+    next();
+});
+
 
 
 app.use('/', routes);
