@@ -5,6 +5,7 @@ var ctrlQuiz = require( "../controllers/quiz_controller" ); 		// Añadir el cont
 var ctrlAuthor = require( "../controllers/author_controller" ); 	// Añadir el controlador de autor
 var ctrlComment = require( "../controllers/comment_controller" ); 	// Añadir el controlador de comentarios
 var ctrlSession = require( "../controllers/session_controller" );	// Añadir el controlador de sesiones
+var ctrlEstadisticas = require( "../controllers/estadisticas_controller" );
 
 
 /* GET home page. */
@@ -41,6 +42,7 @@ router.get( "/login" 							, ctrlSession.new 		);	// Mostrar el formulario de l
 router.post( "/login"							, ctrlSession.create 	);	// Crear una nueva sesión
 router.delete( "/login"							, ctrlSession.destroy	);	// Eliminar la sesión
 
+router.get( "/estadisticas"						, ctrlSession.loginRequerido	, ctrlEstadisticas.show );
 
 
 router
