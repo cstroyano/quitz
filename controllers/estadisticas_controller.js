@@ -30,7 +30,7 @@ exports.show = function( req, res ) {
 
 		estadisticas.preguntasConComentarios = cuenta;
 		estadisticas.preguntasSinComentarios = estadisticas.preguntas - estadisticas.preguntasConComentarios;
-		estadisticas.comentariosPorPregunta	 = ( estadisticas.preguntas > 0 ? estadisticas.comentarios / estadisticas.preguntas : 0 );
+		estadisticas.comentariosPorPregunta	 = ( estadisticas.preguntas > 0 ? estadisticas.comentarios / estadisticas.preguntas : 0 ).toFixed( 2 );
 
 	}).catch( function( err ) {
 
