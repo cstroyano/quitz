@@ -19,10 +19,10 @@ app.set('view engine', 'ejs');
 
 app.use( partials() );
 
-app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());				// Quitado el {extended: false}
+app.use( favicon(__dirname + '/public/favicon.ico') );
+app.use( logger('dev') );
+app.use( bodyParser.json() );
+app.use( bodyParser.urlencoded() );				// Quitado el {extended: false}
 
 app.use(cookieParser( "ekdjwd/;as24aBRw#" ));	// Añadir semilla para cifrar la cookie
 app.use( session() );							// Instalar el middleware de la sesión

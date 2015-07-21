@@ -7,6 +7,7 @@ exports.loginRequerido = function( req, res, next ) {
 		next();
 	}
 	else {
+		req.session.errors = [ { "message": "Es necesario logarse para acceder a esa opción" } ];
 		res.redirect( "/login" );
 	}
 
