@@ -11,9 +11,9 @@
 <br>
 <p>
 	<label for="tema" class="rem">Tema:</label>
-	<select name="quiz[destema]" id="tema">
+	<select name="tema[destema]" id="tema">
 		<% var i; for( i = 0; i < temas.length; i++ ) { %>
-			<% if ( temas[ i ].destema === quiz.destema ) { %>
+			<% if ( parseInt( temas[ i ].id ) === parseInt( quiz.TemaId ) ) { %>
 				<option value="<%= temas[ i ].destema %>" selected><%= temas[ i ].destema %></option>
 			<% } else { %>
 				<option value="<%= temas[ i ].destema %>"><%= temas[ i ].destema %></option>

@@ -38,14 +38,17 @@ exports.load = function( req, res, next, quizId ) {
 
 
 // GET /quizes		-> Mostrar la lista de preguntas
-exports.index = function( req, res ) {
+exports.index = function( req, res, next ) {
 
 	var filtro = ( req.query.search || "" );
 
 	console.log( "\n*** index ***\nreq.query.search: [" + filtro + "]\n" );
 
-	modelo.Quiz.findAll( { where: ["pregunta like ?", "%" + filtro + "%" ], order: "pregunta" } ).then(
+	modelo.Quiz.findAll( { where: ["pregunta like ?", "%" + filtro + "%" ],
+							order: "pregunta",
+							include: [ { model: modelo.Tema } ] } ).then(
 			function( quizes ) {
+
 				res.render( "quizes/index.ejs", { quizes: quizes, filtro: filtro, errors: [] } );
 			}
 		).catch( function( error ) { next( error ); } );
@@ -95,13 +98,15 @@ exports.answer = function( req, res ) {
 
 // GET /quizes/new		-> Formulario de alta de pregunta
 exports.new = function( req, res ) {
-	var quiz = modelo.Quiz.build( { pregunta: "Pregunta", respuesta: "Respuesta", destema: "Otro" } ); // Crear objeto Quiz
-
 	console.log( "\n*** new ***\n" );
 
 	modelo.Tema.findAll( { order: "destema" } ).then(
 		function( temas ) {
 			console.log( "Número de temas: " + temas.length + "\n" );
+
+			var quiz = modelo.Quiz.build( { pregunta: "Pregunta", respuesta: "Respuesta", TemaId: temas[ 0 ].id.toString() } ); // Crear objeto Quiz
+
+			console.log( "quiz.pregunta = " + quiz.pregunta + "\n" + "quiz.respuesta = " + quiz.respuesta + "\n" + "quiz.TemaId = " + quiz.temaid + "\n" );
 
 			res.render( "quizes/new", { quiz: quiz, temas: temas, errors: [] } );
 		}
@@ -128,58 +133,76 @@ exports.edit = function( req, res ) {
 // POST /quizes/create	-> Crea una nueva pregunta
 exports.create = function( req, res ) {
 	var quiz = modelo.Quiz.build( req.body.quiz );
+	var tema = modelo.Tema.build( req.body.tema );
 
-	console.log( "\n*** create ***\nPregunta: " + quiz.pregunta + "\nRespuesta: " + quiz.respuesta + "\nTema: " + quiz.destema + "\n" );
+	console.log( "\n*** create ***\nPregunta: " + quiz.pregunta + "\nRespuesta: " + quiz.respuesta + "\nTema: " + tema.destema );
 
-	quiz.validate().then(
-		function( err ) {
+	modelo.Tema.find( { where:	{ destema: tema.destema } } ).then( // Buscar el Id del tema
 
-			if ( err ) {
-				res.render( "quizes/new", { quiz: quiz, errors: err.errors } );
-			}
-			else {
-				quiz.save( { fields: [ "pregunta", "respuesta", "destema" ] } ).then(
-					function() {
-						res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
-					}
+		function( temas ) {
 
-				).catch( function( error ) { next( error ); } ); // final del quiz.save().then().catch()
+				console.log( "\n*** Tema encontrado: " + temas.id + " - " + temas.destema );
+		
+				quiz.TemaId = temas.id;
 
-			} // Final del if-else
-
-		} // Final del function( err )
-
-	); // Final del quiz.validate().then()
-
+				quiz.validate().then(
+					function( err ) {
+			
+						if ( err ) {
+							res.render( "quizes/new", { quiz: quiz, errors: err.errors } );
+						}
+						else {
+							quiz.save( { fields: [ "pregunta", "respuesta", "TemaId" ] } ).then(
+								function() {
+									res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
+								}
+			
+							).catch( function( error ) { next( error ); } ); // final del quiz.save().then().catch()
+			
+						} // Final del if-else
+			
+					} // Final del function( err )
+			
+				); // Final del quiz.validate().then()
+		}
+	); // Final de la búsqueda del tema
 };
 
 
 // PUT /quizes/:quizId(\\d+) 		-> Modifica una pregunta en base de datos.
 exports.update = function( req, res ) {
+	var tema = modelo.Tema.build( req.body.tema );
+
 	req.quiz.pregunta = req.body.quiz.pregunta;
 	req.quiz.respuesta = req.body.quiz.respuesta;
-	req.quiz.destema = req.body.quiz.destema;
 
-	console.log( "\n*** update ***\nPregunta: " + req.quiz.pregunta + "\nRespuesta: " + req.quiz.respuesta + "\nTema: " + req.quiz.destema + "\n" );
+	console.log( "\n*** update ***\nPregunta: " + req.quiz.pregunta + "\nRespuesta: " + req.quiz.respuesta + "\nTema: " + tema.destema + "\n" );
 
-	req.quiz.validate().then(
-		function( err ) {
-			if ( err ) {
-				res.render( "quizes/edit", { quiz: quiz, errors: err.errors } );
-			}
-			else {
-				req.quiz.save( { fields: [ "pregunta", "respuesta", "destema" ] } ).then(
-					function() {
-						res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
-					}
+	modelo.Tema.find( { where: { destema: tema.destema } } ).then( // Buscar el id tema
 
-				).catch( function( error ) { next( error ); } ); // final del quiz.save().then().catch()
+		function( temas ) {
+				req.quiz.TemaId = temas.id;
 
-			} // Final del if-else
-
-		} // Final del function( err )
-
-	); // Final del req.quiz.validate().the()
+				req.quiz.validate().then(
+					function( err ) {
+						if ( err ) {
+							res.render( "quizes/edit", { quiz: quiz, errors: err.errors } );
+						}
+						else {
+							req.quiz.save( { fields: [ "pregunta", "respuesta", "TemaId" ] } ).then(
+								function() {
+									res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
+								}
+			
+							).catch( function( error ) { next( error ); } ); // final del quiz.save().then().catch()
+			
+						} // Final del if-else
+			
+					} // Final del function( err )
+			
+				); // Final del req.quiz.validate().the()
+		}
+	); // Final de la búsqueda del idTema
 };
 
 

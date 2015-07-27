@@ -37,8 +37,12 @@ var Quiz = sequelize.import( path.join( __dirname, "quiz" ) );
 var Tema = sequelize.import( path.join( __dirname, "tema" ) );
 var Comment = sequelize.import( path.join( __dirname, "comment" ) )
 
+// Establecer las FK's entre las tablas temas y quizes
+Quiz.belongsTo( Tema );
+Tema.hasMany( Quiz );
 
-// Establecer las FK's entre tablas
+
+// Establecer las FK's entre las tablas quizes y comments
 Comment.belongsTo( Quiz );
 Quiz.hasMany( Comment );
 
@@ -51,7 +55,7 @@ exports.Comment = Comment;
 
 
 // Crear e inicializar la tabla de preguntas en la BD
-sequelize.sync().then( function() {
+sequelize.sync( [options = { force: true } ] ).then( function() {
 
 	Tema.count().then( function( count ) {
 		if ( count === 0 ) {
@@ -64,20 +68,6 @@ sequelize.sync().then( function() {
 		}
 
 	});
-
-	Quiz.count().then( function( count ) {
-
-		if ( count === 0 ) {
-			Quiz.create( { pregunta: "Capital de Italia", respuesta: "Roma", destema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
-			Quiz.create( { pregunta: "Capital de España", respuesta: "Madrid", destema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
-			Quiz.create( { pregunta: "Capital de Portugal", respuesta: "Lisboa", destema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
-			Quiz.create( { pregunta: "Capital de Francia", respuesta: "París", destema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
-			Quiz.create( { pregunta: "Capital de UK", respuesta: "Londres", destema: "Geografía" } ).then( function() { console.log( "BD OK" ); } );
-			Quiz.create( { pregunta: "Número PI con cinco decimales", respuesta: "3.14159", destema: "Ciencia" } ).then( function() { console.log( "BD OK" ); } );
-
-		}
-
-	} );
 
 } );
 
