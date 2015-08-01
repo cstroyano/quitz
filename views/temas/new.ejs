@@ -1,0 +1,13 @@
+<p>Añadir tema:</p>
+
+<form method="post" action="/temas/create">
+	<br>
+	<p>
+		<label for="tema" class="rem">Tema:</label>
+		<input type="text" id="tema" name="tema[destema]" value="<%= tema.destema %>" size="40" />
+	</p>
+	<br>
+	<p>
+		<a href="/temas"><button type="button" class="boton">Cancelar</button></a> <input type="submit" value="Salvar" class="boton">
+	</p>
+</form>

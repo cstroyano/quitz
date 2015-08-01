@@ -55,7 +55,7 @@ exports.Comment = Comment;
 
 
 // Crear e inicializar la tabla de preguntas en la BD
-sequelize.sync( [options = { force: true } ] ).then( function() {
+sequelize.sync( { force: false } ).then( function() {
 
 	Tema.count().then( function( count ) {
 		if ( count === 0 ) {

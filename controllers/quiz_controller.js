@@ -13,19 +13,10 @@ exports.load = function( req, res, next, quizId ) {
 
 		function( quiz ) {
 
-			console.log( "\n*** load ***\n" );
+			console.log( "\n*** quiz_controller.load ***\n" );
 
 			if ( quiz ) {
-				var index = 0;
-
 				req.quiz = quiz;
-
-				console.log( "Mostrar los comentarios:" );
-				for( index in quiz.comments ) {
-					console.log( "\t" + quiz.comments[ index ].texto );
-				}
-				console.log( "Final de comentarios" );
-
 				next();
 			}
 			else {
@@ -42,7 +33,7 @@ exports.index = function( req, res, next ) {
 
 	var filtro = ( req.query.search || "" );
 
-	console.log( "\n*** index ***\nreq.query.search: [" + filtro + "]\n" );
+	console.log( "\n*** quiz_controller.index ***\nreq.query.search: [" + filtro + "]\n" );
 
 	modelo.Quiz.findAll( { where: ["pregunta like ?", "%" + filtro + "%" ],
 							order: "pregunta",
@@ -157,13 +148,13 @@ exports.create = function( req, res ) {
 									res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
 								}
 			
-							).catch( function( error ) { next( error ); } ); // final del quiz.save().then().catch()
+							).catch( function( error ) { res.render( "quizes/new", { quiz: quiz, errors: err.errors } ); } ); // final del quiz.save().then().catch()
 			
 						} // Final del if-else
 			
 					} // Final del function( err )
 			
-				); // Final del quiz.validate().then()
+				).catch( function( error ) { res.render( "quizes/new", { quiz: quiz, errors: err.errors } ); } ); // Final del quiz.validate().then()
 		}
 	); // Final de la búsqueda del tema
 };
@@ -209,12 +200,12 @@ exports.update = function( req, res ) {
 // DELETE /quizes/:quizId(\\d+)		-> Borra una pregunta
 exports.destroy = function( req, res ) {
 
-	console.log( "n*** destroy ***\nPregunta: " + req.quiz.pregunta + "\nRespuesta: " + req.quiz.respuesta + "\nTema: " + req.quiz.destema + "\n" );
+	console.log( "n*** destroy ***\nPregunta: " + req.quiz.pregunta + "\nRespuesta: " + req.quiz.respuesta + "\n" );
 
 	req.quiz.destroy().then(
 		function() {
 			res.redirect( "/quizes" );
 		}
-	).catch( function( errror ) { next( error ); } );
+	);
 };
 

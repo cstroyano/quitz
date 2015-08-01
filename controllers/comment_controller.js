@@ -7,6 +7,9 @@ var modelo = require( "../models/models.js" );
 exports.load = function( req, res, next, commentId ) {
 	modelo.Comment.findById( Number( commentId ) ).then(
 		function( comment ) {
+
+			console.log( "\n*** comment_controller.load ***\n" );
+
 			if ( comment ) {
 				req.comment = comment;
 				next();

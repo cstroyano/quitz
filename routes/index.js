@@ -1,11 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-var ctrlQuiz = require( "../controllers/quiz_controller" ); 		// Añadir el controlador preguntas y respuestas
-var ctrlAuthor = require( "../controllers/author_controller" ); 	// Añadir el controlador de autor
-var ctrlComment = require( "../controllers/comment_controller" ); 	// Añadir el controlador de comentarios
-var ctrlSession = require( "../controllers/session_controller" );	// Añadir el controlador de sesiones
-var ctrlEstadisticas = require( "../controllers/estadisticas_controller" );
+var ctrlQuiz = require( "../controllers/quiz_controller" ); 				// Añadir el controlador preguntas y respuestas
+var ctrlAuthor = require( "../controllers/author_controller" ); 			// Añadir el controlador de autor
+var ctrlComment = require( "../controllers/comment_controller" ); 			// Añadir el controlador de comentarios
+var ctrlSession = require( "../controllers/session_controller" );			// Añadir el controlador de sesiones
+var ctrlEstadisticas = require( "../controllers/estadisticas_controller" );	// Añadir el controlador de estadísticas
+var ctrlTemas = require( "../controllers/temas_controller" );				// Añadir el controlador de temas
 
 
 /* GET home page. */
@@ -16,6 +17,7 @@ router.get('/', function(req, res) {
 
 router.param( "quizId"		, ctrlQuiz.load 	);	// Autoload de comandos que tengan identificador de pregunta
 router.param( "commentId"	, ctrlComment.load 	);	// Autoload de comandos que tengan identificador de comentario
+router.param( "temaId"		, ctrlTemas.load	);	// Autoload de comandos que tengan identificador de tema
 
 
 // Rutas de la aplicación
@@ -43,6 +45,13 @@ router.post( "/login"							, ctrlSession.create 	);	// Crear una nueva sesión
 router.delete( "/login"							, ctrlSession.destroy	);	// Eliminar la sesión
 
 router.get( "/estadisticas"						, ctrlSession.loginRequerido	, ctrlEstadisticas.show );
+
+router.get( "/temas"							, ctrlTemas.index );	// Mostrar la lista de temas
+router.get( "/temas/index"						, ctrlTemas.index );	// Mostrar la lista de temas
+
+router.get( "/temas/new"						, ctrlSession.loginRequerido	, ctrlTemas.new		);	// Mostrar formulario de creación de tema
+router.post( "/temas/create"					, ctrlSession.loginRequerido	, ctrlTemas.create 	);	// Crear tema
+router.delete( "/temas/:temaId(\\d+)"			, ctrlSession.loginRequerido	, ctrlTemas.destroy	);	// Borrar tema
 
 
 router
