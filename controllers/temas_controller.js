@@ -88,7 +88,7 @@ exports.destroy = function( req, res, next ) {
 
 	console.log( "n*** temas.controller.destroy ***\n\t-> Tema: " + req.tema.destema + "\n\t-> Id: " + req.tema.id + "\n" );
 
-	modelo.Quiz.count( { where: [ "temaid = ?", req.tema.id ] } ).then(
+	modelo.Quiz.count( { where: [ "TemaId = ?", req.tema.id ] } ).then(
 		function( cuenta ) {
 			if ( cuenta === 0 ) {
 				req.tema.destroy().then(
