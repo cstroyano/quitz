@@ -104,10 +104,11 @@ exports.destroy = function( req, res, next ) {
 
 		} // Final de function( cuenta )
 
-	).catch( function( error ) {
-					req.session.errors = [ { "message": "Error buscando el número de preguntas del tema: " + error.message } ];
-					res.redirect( "/temas" );
-				}
-	); // Final del modelo.Quiz.count().then().catch
+	);
+	//.catch( function( error ) {
+	//				req.session.errors = [ { "message": "Error buscando el número de preguntas del tema: " + error.message } ];
+	//				res.redirect( "/temas" );
+	//			}
+	//); // Final del modelo.Quiz.count().then().catch
 };
 

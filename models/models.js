@@ -66,13 +66,48 @@ sequelize.sync( { force: true } ).then( function() {
 
 	Tema.count().then( function( count ) {
 		if ( count === 0 ) {
-			Tema.create( { destema: "Otro" } ).then( function() { console.log( "Tema Otro - BD OK" ); } );
-			Tema.create( { destema: "Humanidades" } ).then( function() { console.log( "Tema Humanidades - BD OK" ); } );
-			Tema.create( { destema: "Ocio" } ).then( function() { console.log( "Tema Ocio - BD OK" ); } );
-			Tema.create( { destema: "Ciencia" } ).then( function() { console.log( "Tema Ciencia - BD OK" ); } );
-			Tema.create( { destema: "Tecnología" } ).then( function() { console.log( "Tema Tecnología - BD OK" ); } );
-			Tema.create( { destema: "Geografía" } ).then( function() { console.log( "Tema Geografía - BD OK" ); } );
-			Tema.create( { destema: "Literatura" } ).then( function() { console.log( "Tema Literatura - BD OK" ); } );
+			Tema.create( { destema: "Otro" } )
+				.then( function( tema ) {
+						console.log( "Tema " + tema.destema + " con id " + tema.id );
+				});
+
+			Tema.create( { destema: "Historia" } )
+				.then( function( tema ) {
+						console.log( "Tema " + tema.destema + " con id " + tema.id );
+
+						Quiz.create( { pregunta: "Año del descubrimiento de América", respuesta: "1492", TemaId: tema.id } )
+							.then( function( quiz ) {
+								console.log( "Pregunta: " + quiz.pregunta );
+								console.log( "Respuesta: " + quiz.respuesta );
+								console.log( "TemaId: " + quiz.TemaId );
+							}); 
+				});
+				
+			Tema.create( { destema: "Ocio" } )
+				.then( function( tema ) {
+						console.log( "Tema " + tema.destema + " con id " + tema.id );
+				});
+
+			Tema.create( { destema: "Ciencia" } )
+				.then( function( tema ) {
+						console.log( "Tema " + tema.destema + " con id " + tema.id );
+				});
+
+			Tema.create( { destema: "Tecnología" } )
+				.then( function( tema ) {
+						console.log( "Tema " + tema.destema + " con id " + tema.id );
+				});
+
+			Tema.create( { destema: "Geografía" } )
+				.then( function( tema ) {
+						console.log( "Tema " + tema.destema + " con id " + tema.id );
+				});
+
+			Tema.create( { destema: "Literatura" } )
+				.then( function( tema ) {
+						console.log( "Tema " + tema.destema + " con id " + tema.id );
+				});
+
 		}
 
 	}); // Final de la inicialización de temas
