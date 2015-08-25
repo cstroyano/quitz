@@ -32,10 +32,12 @@ var sequelize = new Sequelize( DB_name
 							);
 
 
-// Importar la definición de la tabla Quiz
+// Importar la definición de las tablas
 var Quiz = sequelize.import( path.join( __dirname, "quiz" ) );
 var Tema = sequelize.import( path.join( __dirname, "tema" ) );
-var Comment = sequelize.import( path.join( __dirname, "comment" ) )
+var Comment = sequelize.import( path.join( __dirname, "comment" ) );
+var Perfil = sequelize.import( path.join( __dirname, "perfil" ) );
+var Usuario = sequelize.import( path.join( __dirname, "usuario" ) );
 
 // Establecer las FK's entre las tablas temas y quizes
 Quiz.belongsTo( Tema );
@@ -46,12 +48,17 @@ Tema.hasMany( Quiz );
 Comment.belongsTo( Quiz );
 Quiz.hasMany( Comment );
 
+// Establecer las FK's entre las tablas perfiles y usuarios
+Usuario.belongsTo( Perfil );
+Perfil.hasMany( Usuario );
+
 
 // Exportar las definiciones de tablas
 exports.Quiz = Quiz;
 exports.Tema = Tema;
 exports.Comment = Comment;
-
+exports.Perfil = Perfil;
+exports.Usuario = Usuario;
 
 
 // Crear e inicializar la tabla de preguntas en la BD
@@ -65,9 +72,28 @@ sequelize.sync( { force: true } ).then( function() {
 			Tema.create( { destema: "Ciencia" } ).then( function() { console.log( "Tema Ciencia - BD OK" ); } );
 			Tema.create( { destema: "Tecnología" } ).then( function() { console.log( "Tema Tecnología - BD OK" ); } );
 			Tema.create( { destema: "Geografía" } ).then( function() { console.log( "Tema Geografía - BD OK" ); } );
+			Tema.create( { destema: "Literatura" } ).then( function() { console.log( "Tema Literatura - BD OK" ); } );
 		}
 
-	});
+	}); // Final de la inicialización de temas
+
+	Perfil.count().then( function( count ) {
+		if ( count === 0 ) {
+			Perfil.create( { desperfil: "Administrador", nivel: 0 } )
+				.then( function( perfil ) {
+					console.log( "Creado el perfil " + perfil.desperfil + " con el id " + perfil.id );
+
+					Usuario.create( { username: "admin", password: "1234", PerfilId: perfil.id } )
+						.then( function( usuario ) {
+							console.log( "Creado el usuario " + usuario.username + " con el perfil " + usuario.PerfilId );
+						});
+				} );
+
+			Perfil.create( { desperfil: "Usuario", nivel: 10 } ).then( function() { console.log( "Perfil Usuario" ); } );
+			Perfil.create( { desperfil: "Invitado", nivel: 90 } ).then( function() { console.log( "Perfil Invitado" ); } );
+		}
+
+	}); // Final de la inicialización de perfiles
 
 } );
 
