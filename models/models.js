@@ -82,30 +82,65 @@ sequelize.sync( { force: true } ).then( function() {
 								console.log( "TemaId: " + quiz.TemaId );
 							}); 
 				});
-				
+
 			Tema.create( { destema: "Ocio" } )
 				.then( function( tema ) {
 						console.log( "Tema " + tema.destema + " con id " + tema.id );
+
+						Quiz.create( { pregunta: "Director de Terminator", respuesta: "James Cameron", TemaId: tema.id } )
+							.then( function( quiz ) {
+								console.log( "Pregunta: " + quiz.pregunta );
+								console.log( "Respuesta: " + quiz.respuesta );
+								console.log( "TemaId: " + quiz.TemaId );
+							}); 
 				});
 
 			Tema.create( { destema: "Ciencia" } )
 				.then( function( tema ) {
 						console.log( "Tema " + tema.destema + " con id " + tema.id );
+
+						Quiz.create( { pregunta: "Planeta más próximo al Sol", respuesta: "Mercurio", TemaId: tema.id } )
+							.then( function( quiz ) {
+								console.log( "Pregunta: " + quiz.pregunta );
+								console.log( "Respuesta: " + quiz.respuesta );
+								console.log( "TemaId: " + quiz.TemaId );
+							}); 
 				});
 
 			Tema.create( { destema: "Tecnología" } )
 				.then( function( tema ) {
 						console.log( "Tema " + tema.destema + " con id " + tema.id );
+
+						Quiz.create( { pregunta: "Padre de la tecnología celular o móvil", respuesta: "Martín Cooper", TemaId: tema.id } )
+							.then( function( quiz ) {
+								console.log( "Pregunta: " + quiz.pregunta );
+								console.log( "Respuesta: " + quiz.respuesta );
+								console.log( "TemaId: " + quiz.TemaId );
+							}); 
 				});
 
 			Tema.create( { destema: "Geografía" } )
 				.then( function( tema ) {
 						console.log( "Tema " + tema.destema + " con id " + tema.id );
+
+						Quiz.create( { pregunta: "Río más largo del mundo", respuesta: "Nilo", TemaId: tema.id } )
+							.then( function( quiz ) {
+								console.log( "Pregunta: " + quiz.pregunta );
+								console.log( "Respuesta: " + quiz.respuesta );
+								console.log( "TemaId: " + quiz.TemaId );
+							}); 
 				});
 
 			Tema.create( { destema: "Literatura" } )
 				.then( function( tema ) {
 						console.log( "Tema " + tema.destema + " con id " + tema.id );
+
+						Quiz.create( { pregunta: "Autor de El Lazarillo de Tormes", respuesta: "Anónimo", TemaId: tema.id } )
+							.then( function( quiz ) {
+								console.log( "Pregunta: " + quiz.pregunta );
+								console.log( "Respuesta: " + quiz.respuesta );
+								console.log( "TemaId: " + quiz.TemaId );
+							}); 
 				});
 
 		}
@@ -131,4 +166,5 @@ sequelize.sync( { force: true } ).then( function() {
 	}); // Final de la inicialización de perfiles
 
 } );
+
 
