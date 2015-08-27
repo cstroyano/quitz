@@ -29,7 +29,7 @@ exports.create = function( req, res ) {
 	var login = req.body.login;
 	var password = req.body.password;
 
-	var userController = require( "./user_controller" );
+	var userController = require( "./usuario_controller" );
 	userController.autenticar( login, password, function( error, user ) {
 
 		if ( error ) {
@@ -38,7 +38,7 @@ exports.create = function( req, res ) {
 		}
 		else {	// Crear req.session.user y guardar campos id y username.
 
-			req.session.user = { id: user.id, username: user.username };
+			req.session.user = { id: user.id, username: user.username, nivel: user.Perfil.nivel };
 			res.redirect( req.session.redir.toString() );	// Redirigir al path anterior al login
 		}
 

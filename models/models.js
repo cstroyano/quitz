@@ -66,9 +66,16 @@ sequelize.sync( { force: true } ).then( function() {
 
 	Tema.count().then( function( count ) {
 		if ( count === 0 ) {
-			Tema.create( { destema: "Otro" } )
+			Tema.create( { destema: "Otros" } )
 				.then( function( tema ) {
 						console.log( "Tema " + tema.destema + " con id " + tema.id );
+
+						Quiz.create( { pregunta: "¿De qué color era el caballo blanco de Santiago?", respuesta: "blanco", TemaId: tema.id } )
+							.then( function( quiz ) {
+								console.log( "Pregunta: " + quiz.pregunta );
+								console.log( "Respuesta: " + quiz.respuesta );
+								console.log( "TemaId: " + quiz.TemaId );
+							});
 				});
 
 			Tema.create( { destema: "Historia" } )
@@ -159,8 +166,25 @@ sequelize.sync( { force: true } ).then( function() {
 						});
 				} );
 
-			Perfil.create( { desperfil: "Usuario", nivel: 10 } ).then( function() { console.log( "Perfil Usuario" ); } );
-			Perfil.create( { desperfil: "Invitado", nivel: 90 } ).then( function() { console.log( "Perfil Invitado" ); } );
+			Perfil.create( { desperfil: "Usuario", nivel: 10 } )
+				.then( function( perfil ) {
+					console.log( "Creado el perfil " + perfil.desperfil + " con el id " + perfil.id );
+
+					Usuario.create( { username: "kk", password: "abcd", PerfilId: perfil.id } )
+						.then( function( usuario ) {
+							console.log( "Creado el usuario " + usuario.username + " con el perfil " + usuario.PerfilId );
+						});
+				} );
+
+			Perfil.create( { desperfil: "Invitado", nivel: 90 } )
+				.then( function( perfil ) {
+					console.log( "Creado el perfil " + perfil.desperfil + " con el id " + perfil.id );
+
+					Usuario.create( { username: "invi", password: "tado", PerfilId: perfil.id } )
+						.then( function( usuario ) {
+							console.log( "Creado el usuario " + usuario.username + " con el perfil " + usuario.PerfilId );
+						});
+				} );
 		}
 
 	}); // Final de la inicialización de perfiles
