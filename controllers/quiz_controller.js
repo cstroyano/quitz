@@ -8,12 +8,12 @@ var modelo = require( "../models/models.js" );
 // Autoload	-> Carga el objeto Quiz con los datos de una pregunta cuando se recibe un Id
 exports.load = function( req, res, next, quizId ) {
 
+	console.log( "\n*** quiz_controller.load *** -" + quizId + "\n" );
+
 	modelo.Quiz.find( { where:	{ id: Number( quizId ) },
 						include: [ { model: modelo.Comment } ] } ).then(
 
 		function( quiz ) {
-
-			console.log( "\n*** quiz_controller.load ***\n" );
 
 			if ( quiz ) {
 				req.quiz = quiz;

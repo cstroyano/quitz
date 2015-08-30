@@ -7,6 +7,7 @@ var ctrlComment = require( "../controllers/comment_controller" ); 			// Añadir 
 var ctrlSession = require( "../controllers/session_controller" );			// Añadir el controlador de sesiones
 var ctrlEstadisticas = require( "../controllers/estadisticas_controller" );	// Añadir el controlador de estadísticas
 var ctrlTemas = require( "../controllers/temas_controller" );				// Añadir el controlador de temas
+var ctrlUsuario = require( "../controllers/usuario_controller" );			// Añadir el controlador de usuarios
 
 
 /* GET home page. */
@@ -18,6 +19,7 @@ router.get('/', function(req, res) {
 router.param( "quizId"		, ctrlQuiz.load 	);	// Autoload de comandos que tengan identificador de pregunta
 router.param( "commentId"	, ctrlComment.load 	);	// Autoload de comandos que tengan identificador de comentario
 router.param( "temaId"		, ctrlTemas.load	);	// Autoload de comandos que tengan identificador de tema
+router.param( "usuarioId"	, ctrlUsuario.load 	);	// Autoload de comandos que tengan indetificador de usuario
 
 
 // Rutas de la aplicación
@@ -53,7 +55,11 @@ router.get( "/temas/new"						, ctrlSession.loginRequerido	, ctrlTemas.new		);	/
 router.post( "/temas/create"					, ctrlSession.loginRequerido	, ctrlTemas.create 	);	// Crear tema
 router.delete( "/temas/:temaId(\\d+)"			, ctrlSession.loginRequerido	, ctrlTemas.destroy	);	// Borrar tema
 
+//router.get( "/usuarios" 						, ctrlSession.loginRequerido	, ctrlUsuario.index		);	// Mostrar lista de usuarios
+//router.get( "/usuario/index"					, ctrlSession.loginRequerido	, ctrlUsuario.index		);	// Mostrar lista de usuarios
+//router.get( "/usuario/new"						, ctrlSession.loginRequerido	, ctrlUsuario.new		);	// Formulario de creación de usuairo
+//router.post( "/usuario/create"					, ctrlSession.loginRequerido	, ctrlUsuario.create	);	// Crear nuevo usuario
+//router.delete( "/usuario/:usuarioId(\\d+)"		, ctrlSession.loginRequerido	, ctrlUsuario.destroy	);	// Borrar usuario
 
-router
 
 module.exports = router;

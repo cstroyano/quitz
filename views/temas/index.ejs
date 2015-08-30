@@ -7,26 +7,30 @@
 				<%= temas[i].destema %>
 			</td>
 			<% if ( session.user ) { %>
-				<td>&nbsp;</td>
-				<td>
-					<form method="post" action="temas/<%= temas[i].id %>?_method=delete">
-						<button type="submit" onclick="return confirm( 'Borrar tema: <%= temas[ i ].destema %>' );">
-							<img src="/images/borrar.png" alt="Borrar" height="20" width="20"></a>
-						</button>
-					</form>
-				</td>
+				<% if ( session.user.nivel === 0 ) { %>
+					<td>&nbsp;</td>
+					<td>
+						<form method="post" action="temas/<%= temas[i].id %>?_method=delete">
+							<button type="submit" onclick="return confirm( 'Borrar tema: <%= temas[ i ].destema %>' );">
+								<img src="/images/borrar.png" alt="Borrar" height="20" width="20"></a>
+							</button>
+						</form>
+					</td>
+				<% } %>
 			<% } %>
 		</tr>
 	<% } %>
 </table></p>
 
 <% if ( session.user ) { %>
-	<br><hr><br>
-	<p>
-		<a href="/temas/new">
-			<button type="button" class="boton">
-				Crear tema
-			</button>
-		</a>
-	</p>
+	<% if ( session.user.nivel === 0 ) { %>
+		<br><hr><br>
+		<p>
+			<a href="/temas/new">
+				<button type="button" class="boton">
+					Crear tema
+				</button>
+			</a>
+		</p>
+	<% } %>
 <% } %>

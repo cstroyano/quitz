@@ -36,6 +36,11 @@
   		  <span><a href="/quizes">Preguntas</a></span>
         <span><a href="/author">Autor</a></span>
         <span><a href="/estadisticas">Estadísticas</a></span>
+        <% if ( session.user ) { %>
+          <% if ( session.user.nivel === 0 ) { %>
+            <span><a href="/usuarios">Usuarios</a></span>
+          <% } %>
+        <% } %>
   		</nav>
 
   		<section class="main" id="s1">

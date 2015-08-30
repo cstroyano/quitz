@@ -4,6 +4,7 @@
 exports.loginRequerido = function( req, res, next ) {
 
 	if ( req.session.user ) {
+		console.log( "*** session_controller.loginRequerido - " + req.originalUrl );
 		next();
 	}
 	else {
