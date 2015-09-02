@@ -1,0 +1,30 @@
+<p>Nuevo usuario<p>
+<br>
+<form method="post" action="/usuarios/create">
+<p>
+	<label for="usuario" class="rem">Usuario:</label>
+	<input type="text" id="usuario" name="usuario[username]" value="<%= usuario.username %>" size="40" />
+</p>
+<br>
+<p>
+	<label for="clave" class="rem">Password:</label>
+	<input type="text" id="clave" name="usuario[password]" value="<%= usuario.password %>" size="40"/>
+</p>
+<br>
+<p>
+	<label for="perfil" class="rem">Perfil:</label>
+	<select name="usuario[PerfilId]" id="perfil">
+		<% var i; for( i = 0; i < perfiles.length; i++ ) { %>
+			<% if ( parseInt( perfiles[ i ].id ) === parseInt( usuario.PerfilId ) ) { %>
+				<option value="<%= perfiles[ i ].id %>" selected><%= perfiles[ i ].desperfil %></option>
+			<% } else { %>
+				<option value="<%= perfiles[ i ].id %>"><%= perfiles[ i ].desperfil %></option>
+			<% } %>
+		<% } %>
+	</select>
+</p>
+<br>
+<p>
+	<a href="/usuarios"><button type="button" class="boton">Cancelar</button></a> <input type="submit" value="Salvar" class="boton">
+</p>
+</form>

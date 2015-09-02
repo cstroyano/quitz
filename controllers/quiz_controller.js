@@ -89,11 +89,10 @@ exports.answer = function( req, res ) {
 
 // GET /quizes/new		-> Formulario de alta de pregunta
 exports.new = function( req, res ) {
-	console.log( "\n*** new ***\n" );
+	console.log( "\n*** quiz_controller.new ***\n" );
 
 	modelo.Tema.findAll( { order: "destema" } ).then(
 		function( temas ) {
-			console.log( "Número de temas: " + temas.length + "\n" );
 
 			var quiz = modelo.Quiz.build( { pregunta: "Pregunta", respuesta: "Respuesta", TemaId: temas[ 0 ].id.toString() } ); // Crear objeto Quiz
 

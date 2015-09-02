@@ -9,6 +9,8 @@ module.exports = function( sequelize, DataTypes ) {
 											  allowNull: 	false
 											}
 							  } // Final de la definición de campos
+							, { indexes: [ { unique: true, fields: [ "username" ] } ] }
+
 							) // Final sequelize.define()
 	); // Final return
 

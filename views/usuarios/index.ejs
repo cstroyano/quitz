@@ -1,0 +1,22 @@
+<p><table style="margin: 0 auto;">
+
+	<% var i; for( i = 0; i < usuarios.length; i++ ) { %>
+		<tr>
+			<td class="rem"><%= usuarios[ i ].Perfil.desperfil %></td>
+			<td class="rem">&nbsp;</td>
+			<td><%= usuarios[ i ].username %></td>
+			<td class="rem">&nbsp;</td>
+			<td>
+				<form method="post" action="usuarios/<%= usuarios[i].id %>?_method=delete">
+					<button type="submit" onclick="return confirm( 'Borrar usuario: <%= usuarios[ i ].username %>' );">
+						<img src="/images/borrar.png" alt="Borrar" height="20" width="20"></a>
+					</button>
+				</form>
+			</td>
+		</tr>
+	<% } %>
+
+</table></p>
+
+<br><hr><br>
+<p><a href="/usuarios/new"><button type="button" class="boton">Añadir usuario</button></a></p>

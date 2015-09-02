@@ -3,6 +3,8 @@
 var modelo = require( "../models/models.js" );	// Importar el modelo
 
 
+// Comprueba si el usuario está logado
+
 exports.autenticar = function( login, password, callback ) {
 
 	console.log( "\n*** usuario_controller.autenticar()\n" );
@@ -24,8 +26,8 @@ exports.autenticar = function( login, password, callback ) {
 		} );
 };
 
-// Autoload => Carga el Usuario con los datos del usuario cuyo código se recibe en la URL
 
+// Autoload => Carga el Usuario con los datos del usuario cuyo código se recibe en la URL
 exports.load = function( req, res, next, usuarioId ) {
 
 	console.log( "\n*** usuario_controller.load() - " + usuarioId + "\n" );
@@ -42,4 +44,68 @@ exports.load = function( req, res, next, usuarioId ) {
 			}
 
 		} );
+};
+
+
+// GET /usuario/index -> Muestra la lista de usuarios
+exports.index = function( req, res ) {
+
+	console.log( "\n*** usuario_controller.index()\n" );
+
+	modelo.Usuario.findAll( { order: "username", include: [ { model: modelo.Perfil } ] } )
+		.then( function( usuarios ) {
+
+			res.render( "usuarios/index", { usuarios: usuarios, errors: [] } );
+
+		} ).catch( function( error ) { next( error ) } );
+};
+
+
+// GET /usuarios/new -> Muestra el formulario de nuevo usuario
+exports.new = function( req, res ) {
+
+	console.log( "\n*** usuario_controller.index ***\n" );
+
+	modelo.Perfil.findAll( { order: "nivel" } )
+		.then( function( perfiles ) {
+
+			var usuario = modelo.Usuario.build( { username: "usuario", password: "password", PerfilId: perfiles[ perfiles.length - 1 ].id } );
+			res.render( "usuarios/new", { usuario: usuario, perfiles: perfiles, errors: [] } );
+
+		} );
+};
+
+
+// POST /usuarios/create -> Crea un nuevo usuario en la aplicación
+exports.create = function( req, res ) {
+	var usuario = modelo.Usuario.build( req.body.usuario );
+
+	console.log( "\n*** usuario_controller.create ***" );
+	console.log( "\t- username: " + usuario.username );
+	console.log( "\t- password: " + usuario.password );
+	console.log( "\t- PerfilId: " + usuario.PerfilId + "\n" );
+
+	usuario.validate().then( function( err ) {
+
+		if ( err ) {
+			modelo.Perfil.findAll( { order: "nivel" } )
+				.then( function( perfiles ) {
+					res.render( "usuarios/new", { usuario: usuario, perfiles: perfiles, errors: err } );
+				});
+		}
+		else {
+			usuario.save( { fields: [ "username", "password", "PerfilId" ] } )
+				.then( function() {
+					res.redirect( "/usuarios" );
+
+				} ).catch( function( err ) {
+						modelo.Perfil.findAll( { order: "nivel" } )
+							.then( function( perfiles ) {
+								res.render( "usuarios/new", { usuario: usuario, perfiles: perfiles, errors: err } );
+						} );
+
+					} );
+		}
+	} );
+
 };
