@@ -199,7 +199,9 @@ exports.update = function( req, res ) {
 // DELETE /quizes/:quizId(\\d+)		-> Borra una pregunta
 exports.destroy = function( req, res ) {
 
-	console.log( "n*** destroy ***\nPregunta: " + req.quiz.pregunta + "\nRespuesta: " + req.quiz.respuesta + "\n" );
+	console.log( "n*** quiz_controller.destroy ***" );
+	console.log( "\t- Pregunta: " + req.quiz.pregunta );
+	console.log( "\t- Respuesta: " + req.quiz.respuesta + "\n" );
 
 	req.quiz.destroy().then(
 		function() {

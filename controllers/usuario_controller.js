@@ -90,7 +90,7 @@ exports.create = function( req, res ) {
 		if ( err ) {
 			modelo.Perfil.findAll( { order: "nivel" } )
 				.then( function( perfiles ) {
-					res.render( "usuarios/new", { usuario: usuario, perfiles: perfiles, errors: err } );
+					res.render( "usuarios/new", { usuario: usuario, perfiles: perfiles, errors: err.errors } );
 				});
 		}
 		else {
@@ -101,11 +101,21 @@ exports.create = function( req, res ) {
 				} ).catch( function( err ) {
 						modelo.Perfil.findAll( { order: "nivel" } )
 							.then( function( perfiles ) {
-								res.render( "usuarios/new", { usuario: usuario, perfiles: perfiles, errors: err } );
+								res.render( "usuarios/new", { usuario: usuario, perfiles: perfiles, errors: err.errors } );
 						} );
 
 					} );
 		}
 	} );
 
+};
+
+// DELETE //usuarios/destroy	-> Borra el usuario seleccionado
+exports.destroy = function( req, res ) {
+
+	console.log( "\n*** usuario_controller.create ***" );
+	console.log( "\t- username: " + req.usuario.username );
+	console.log( "\t- password: " + req.usuario.password );
+
+	req.usuario.destroy().then( function() { res.redirect( "/usuarios" ); });
 };

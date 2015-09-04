@@ -59,7 +59,7 @@ router.get( "/usuarios" 						, ctrlSession.loginRequerido	, ctrlUsuario.index		
 router.get( "/usuarios/index"					, ctrlSession.loginRequerido	, ctrlUsuario.index		);	// Mostrar lista de usuarios
 router.get( "/usuarios/new"						, ctrlSession.loginRequerido	, ctrlUsuario.new		);	// Formulario de creación de usuairo
 router.post( "/usuarios/create"					, ctrlSession.loginRequerido	, ctrlUsuario.create	);	// Crear nuevo usuario
-//router.delete( "/usuarios/:usuarioId(\\d+)"		, ctrlSession.loginRequerido	, ctrlUsuario.destroy	);	// Borrar usuario
+router.delete( "/usuarios/:usuarioId(\\d+)"		, ctrlSession.loginRequerido	, ctrlUsuario.destroy	);	// Borrar usuario
 
 
 module.exports = router;
