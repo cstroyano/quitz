@@ -33,7 +33,7 @@ exports.index = function( req, res, next ) {
 
 	var filtro = ( req.query.search || "" );
 
-	console.log( "\n*** quiz_controller.index ***\nreq.query.search: [" + filtro + "]\n" );
+	console.log( "\n*** quiz_controller.index ***\n\treq.query.search: [" + filtro + "]\n" );
 
 	modelo.Quiz.findAll( { where: ["pregunta like ?", "%" + filtro + "%" ],
 							order: "pregunta",
@@ -51,14 +51,8 @@ exports.index = function( req, res, next ) {
 exports.show = function( req, res ) {
 	var index = 0;
 
-	console.log( "\n*** show***\nreq.quiz.id = " + req.quiz.id + "\n" );
+	console.log( "\n*** quiz_controller.show***\n\treq.quiz.id = " + req.quiz.id + "\n" );
 	
-	console.log( "Mostrar los comentarios:");
-	for( index in req.quiz.comments ) {
-		console.log( "\t" + req.quiz.comments[ index ].texto );
-	}
-	console.log( "Final de comentarios");
-
 	res.render( "quizes/show", { quiz: req.quiz, errors: [] } );
 
 };
@@ -69,9 +63,7 @@ exports.answer = function( req, res ) {
 	var resultado = "";
 	var archivo = "";
 
-	console.log( "\n*** answer ***\nreq.quiz.id = " + req.quiz.id );
-	console.log( "Respuesta en get: " + (req.query.respuesta || "Vacío" ) );
-	console.log( "Respuesta en BBDD: " + ( req.quiz.respuesta || "Sin respuesta" ) + "\n" );
+	console.log( "\n*** quiz_controller.answer ***\n\treq.quiz.id = " + req.quiz.id );
 
 	if ( ( req.query.respuesta || "Vacío" ).toLowerCase() === ( req.quiz.respuesta || "Sin respuesta" ).toLowerCase() ) {
 		resultado = "Correcta";
@@ -135,25 +127,38 @@ exports.create = function( req, res ) {
 		
 				quiz.TemaId = temas.id;
 
-				quiz.validate().then(
-					function( err ) {
+				quiz.validate()
+					.then( function( err ) {
 			
 						if ( err ) {
-							res.render( "quizes/new", { quiz: quiz, errors: err.errors } );
+							modelo.Tema.findAll( { order: "destema" } )
+								.then( function( temas ) {
+									res.render( "quizes/new", { quiz: quiz, temas: temas, errors: err.errors } );
+								} );
 						}
 						else {
-							quiz.save( { fields: [ "pregunta", "respuesta", "TemaId" ] } ).then(
-								function() {
+							quiz.save( { fields: [ "pregunta", "respuesta", "TemaId" ] } )
+								.then( function() {
 									res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
-								}
-			
-							).catch( function( error ) { res.render( "quizes/new", { quiz: quiz, errors: err.errors } ); } ); // final del quiz.save().then().catch()
+
+								} ).catch( function( error ) {
+									modelo.Tema.findAll( { order: "destema" } )
+										.then( function( temas ) {
+											res.render( "quizes/new", { quiz: quiz, temas: temas, errors: err.errors } );
+										} );
+
+								} ); // final del quiz.save().then().catch()
 			
 						} // Final del if-else
 			
 					} // Final del function( err )
 			
-				).catch( function( error ) { res.render( "quizes/new", { quiz: quiz, errors: err.errors } ); } ); // Final del quiz.validate().then()
+				).catch( function( error ) {
+					modelo.Tema.findAll( { order: "destema" } )
+						.then( function( temas ) { 
+							res.render( "quizes/new", { quiz: quiz, temas: temas, errors: err.errors } );
+						} );
+				} ); // Final del quiz.validate().then().catch()
 		}
 	); // Final de la búsqueda del tema
 };
@@ -173,24 +178,33 @@ exports.update = function( req, res ) {
 		function( temas ) {
 				req.quiz.TemaId = temas.id;
 
-				req.quiz.validate().then(
-					function( err ) {
+				req.quiz.validate()
+					.then( function( err ) {
 						if ( err ) {
-							res.render( "quizes/edit", { quiz: quiz, errors: err.errors } );
+							modelo.Tema.findAll( { order: "destema" } )
+								.then( function( temas ) {
+									res.render( "quizes/edit", { quiz: quiz, temas: temas, errors: err.errors } );
+								} );
 						}
 						else {
-							req.quiz.save( { fields: [ "pregunta", "respuesta", "TemaId" ] } ).then(
-								function() {
+							req.quiz.save( { fields: [ "pregunta", "respuesta", "TemaId" ] } )
+								.then( function() {
 									res.redirect( "/quizes" ); // Redirige a la lista de preguntas.
-								}
-			
-							).catch( function( error ) { next( error ); } ); // final del quiz.save().then().catch()
+
+								} ).catch( function( error ) {
+										next( error );
+									} ); // final del quiz.save().then().catch()
 			
 						} // Final del if-else
 			
 					} // Final del function( err )
 			
-				); // Final del req.quiz.validate().the()
+				).catch( function( error ) {
+					modelo.Tema.findAll( { order: "destema" } )
+						.then( function( temas ) { 
+							res.render( "quizes/edit", { quiz: quiz, temas: temas, errors: err.errors } );
+						} );
+				} ); // Final del quiz.validate().then()
 		}
 	); // Final de la búsqueda del idTema
 };
