@@ -35,8 +35,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Guardar path en session.redir para redirigr al mismo punto tras el login
 app.use( function( req, res, next ) {
 
+    console.log( "\n*** session.redir ***\n\treq.method: " + req.method );
+
 	if ( !req.path.match( /\/login|\/logout/ ) ) {
-		req.session.redir = req.path;
+        if ( req.method === 'GET' ) {
+                req.session.redir = req.path;
+        }
 	}
 
 	res.locals.session = req.session;

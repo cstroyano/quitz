@@ -3,16 +3,35 @@
 // Middleware de autorización de accesos HTTP restringidos
 exports.loginRequerido = function( req, res, next ) {
 
+	console.log( "*** session_controller.loginRequerido ***\n\tURL: " + req.originalUrl );
+
 	if ( req.session.user ) {
-		console.log( "*** session_controller.loginRequerido - " + req.originalUrl );
+		console.log( "\tNivel usuario: " + req.session.user.nivel );
 		next();
 	}
 	else {
-		req.session.errors = [ { "message": "Es necesario logarse para acceder a esa opción" } ];
-		res.redirect( "/login" );
+		//req.session.errors = [ { "message": "Es necesario logarse para acceder a esa opción" } ];
+		//res.redirect( "/login" );
+		res.render( "errors/privilegios.ejs", { errors: [ new Error( "Privilegios insuficientes para acceder a esta opción" ) ] } );
 	}
 
 };
+
+
+// Middleware de autorización para usuarios con perfil administrador
+exports.adminRequerido = function( req, res, next ) {
+
+	console.log( "*** session_controller.adminRequerio ***\n\tURL: " + req.originalUrl );
+
+	if ( req.session.user && req.session.user.nivel === 0 ) {
+		console.log( "\tNivel usuario: " + req.session.user.nivel );
+		next();
+	}
+	else {
+		res.render( "errors/privilegios.ejs", { errors: [ new Error( "Privilegios insuficientes para acceder a esta opción" ) ] } );
+	}
+}
+
 
 // GET /login	-> Mostrar el formulario de login
 exports.new = function( req, res ) {
@@ -55,3 +74,4 @@ exports.destroy = function( req, res ) {
 
 	res.redirect( req.session.redir.toString() );	// Redirigir al path anterior al login
 };
+

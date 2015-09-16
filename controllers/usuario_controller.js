@@ -48,15 +48,15 @@ exports.load = function( req, res, next, usuarioId ) {
 
 
 // GET /usuario/index -> Muestra la lista de usuarios
-exports.index = function( req, res ) {
+exports.index = function( req, res, next ) {
 
 	console.log( "\n*** usuario_controller.index()\n" );
 
 	modelo.Usuario.findAll( { order: "username", include: [ { model: modelo.Perfil } ] } )
 		.then( function( usuarios ) {
-
+	
 			res.render( "usuarios/index", { usuarios: usuarios, errors: [] } );
-
+	
 		} ).catch( function( error ) { next( error ) } );
 };
 

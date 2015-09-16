@@ -55,11 +55,11 @@ router.get( "/temas/new"						, ctrlSession.loginRequerido	, ctrlTemas.new		);	/
 router.post( "/temas/create"					, ctrlSession.loginRequerido	, ctrlTemas.create 	);	// Crear tema
 router.delete( "/temas/:temaId(\\d+)"			, ctrlSession.loginRequerido	, ctrlTemas.destroy	);	// Borrar tema
 
-router.get( "/usuarios" 						, ctrlSession.loginRequerido	, ctrlUsuario.index		);	// Mostrar lista de usuarios
-router.get( "/usuarios/index"					, ctrlSession.loginRequerido	, ctrlUsuario.index		);	// Mostrar lista de usuarios
-router.get( "/usuarios/new"						, ctrlSession.loginRequerido	, ctrlUsuario.new		);	// Formulario de creación de usuairo
-router.post( "/usuarios/create"					, ctrlSession.loginRequerido	, ctrlUsuario.create	);	// Crear nuevo usuario
-router.delete( "/usuarios/:usuarioId(\\d+)"		, ctrlSession.loginRequerido	, ctrlUsuario.destroy	);	// Borrar usuario
+router.get( "/usuarios" 						, ctrlSession.adminRequerido	, ctrlUsuario.index		);	// Mostrar lista de usuarios
+router.get( "/usuarios/index"					, ctrlSession.adminRequerido	, ctrlUsuario.index		);	// Mostrar lista de usuarios
+router.get( "/usuarios/new"						, ctrlSession.adminRequerido	, ctrlUsuario.new		);	// Formulario de creación de usuairo
+router.post( "/usuarios/create"					, ctrlSession.adminRequerido	, ctrlUsuario.create	);	// Crear nuevo usuario
+router.delete( "/usuarios/:usuarioId(\\d+)"		, ctrlSession.adminRequerido	, ctrlUsuario.destroy	);	// Borrar usuario
 
 
 module.exports = router;
