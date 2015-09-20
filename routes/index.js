@@ -30,17 +30,17 @@ router.get( "/quizes/index"						, ctrlQuiz.index    	);	// Mostrar lista de pre
 router.get( "/quizes/:quizId(\\d+)"				, ctrlQuiz.show     	);	// Mostrar pregunta
 router.get( "/quizes/:quizId(\\d+)/answer"		, ctrlQuiz.answer   	);	// Mostrar respuesta
 
-router.get( "/quizes/new"						, ctrlSession.loginRequerido	, ctrlQuiz.new		);	// Mostrar formulario de nueva pregunta
-router.get( "/quizes/:quizId(\\d+)/edit"		, ctrlSession.loginRequerido	, ctrlQuiz.edit		);	// Editar una pregunta
-router.post( "/quizes/create"					, ctrlSession.loginRequerido	, ctrlQuiz.create	);	// Crear la nueva pregunta en BD
-router.put( "/quizes/:quizId(\\d+)"				, ctrlSession.loginRequerido	, ctrlQuiz.update 	);	// Actualizar una pregunta en BD
-router.delete( "/quizes/:quizId(\\d+)"			, ctrlSession.loginRequerido	, ctrlQuiz.destroy	);	// Borrar una pregunta en BD
+router.get( "/quizes/new"						, ctrlSession.nivel10Requerido	, ctrlQuiz.new		);	// Mostrar formulario de nueva pregunta
+router.get( "/quizes/:quizId(\\d+)/edit"		, ctrlSession.nivel10Requerido	, ctrlQuiz.edit		);	// Editar una pregunta
+router.post( "/quizes/create"					, ctrlSession.nivel10Requerido	, ctrlQuiz.create	);	// Crear la nueva pregunta en BD
+router.put( "/quizes/:quizId(\\d+)"				, ctrlSession.nivel10Requerido	, ctrlQuiz.update 	);	// Actualizar una pregunta en BD
+router.delete( "/quizes/:quizId(\\d+)"			, ctrlSession.nivel10Requerido	, ctrlQuiz.destroy	);	// Borrar una pregunta en BD
 
 router.get( "/quizes/:quizId(\\d+)/comments/new", ctrlComment.new 		);	// Mostrar el formulario de crear un comentario
 router.post( "/quizes/:quizId(\\d+)/comments"	, ctrlComment.create 	);	// Crear un nuevo comentario
 
 router.put( "/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish"
-												, ctrlSession.loginRequerido	, ctrlComment.publish ); // Autorizar publicación
+												, ctrlSession.nivel10Requerido	, ctrlComment.publish ); // Autorizar publicación
 
 router.get( "/login" 							, ctrlSession.new 		);	// Mostrar el formulario de login
 router.post( "/login"							, ctrlSession.create 	);	// Crear una nueva sesión
@@ -51,9 +51,9 @@ router.get( "/estadisticas"						, ctrlSession.loginRequerido	, ctrlEstadisticas
 router.get( "/temas"							, ctrlTemas.index );	// Mostrar la lista de temas
 router.get( "/temas/index"						, ctrlTemas.index );	// Mostrar la lista de temas
 
-router.get( "/temas/new"						, ctrlSession.loginRequerido	, ctrlTemas.new		);	// Mostrar formulario de creación de tema
-router.post( "/temas/create"					, ctrlSession.loginRequerido	, ctrlTemas.create 	);	// Crear tema
-router.delete( "/temas/:temaId(\\d+)"			, ctrlSession.loginRequerido	, ctrlTemas.destroy	);	// Borrar tema
+router.get( "/temas/new"						, ctrlSession.adminRequerido	, ctrlTemas.new		);	// Mostrar formulario de creación de tema
+router.post( "/temas/create"					, ctrlSession.adminRequerido	, ctrlTemas.create 	);	// Crear tema
+router.delete( "/temas/:temaId(\\d+)"			, ctrlSession.adminRequerido	, ctrlTemas.destroy	);	// Borrar tema
 
 router.get( "/usuarios" 						, ctrlSession.adminRequerido	, ctrlUsuario.index		);	// Mostrar lista de usuarios
 router.get( "/usuarios/index"					, ctrlSession.adminRequerido	, ctrlUsuario.index		);	// Mostrar lista de usuarios

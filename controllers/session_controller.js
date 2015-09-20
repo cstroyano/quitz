@@ -33,6 +33,21 @@ exports.adminRequerido = function( req, res, next ) {
 }
 
 
+// Middleware de autorización para usuarios con perfil administrador
+exports.nivel10Requerido = function( req, res, next ) {
+
+	console.log( "*** session_controller.adminRequerio ***\n\tURL: " + req.originalUrl );
+
+	if ( req.session.user && req.session.user.nivel <= 10 ) {
+		console.log( "\tNivel usuario: " + req.session.user.nivel );
+		next();
+	}
+	else {
+		res.render( "errors/privilegios.ejs", { errors: [ new Error( "Privilegios insuficientes para acceder a esta opción" ) ] } );
+	}
+}
+
+
 // GET /login	-> Mostrar el formulario de login
 exports.new = function( req, res ) {
 	var errors = req.session.errors || {};	// Guarda los errores de sesión
